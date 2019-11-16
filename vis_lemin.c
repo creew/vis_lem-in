@@ -12,10 +12,19 @@
 
 #include "vis_lemin.h"
 
-static void		sdl_destroy(t_vis *vis)
+static int		sdl_destroy(t_vis *vis)
 {
 	SDL_DestroyWindow(vis->window);
+	vis->window = NULL;
+	SDL_DestroyRenderer(vis->ren);
+	vis->ren = NULL;
+	SDL_DestroyTexture(vis->ants);
+	vis->ants = NULL;
+	SDL_RemoveTimer(vis->timer);
+	vis->timer = 0;
 	SDL_Quit();
+	IMG_Quit();
+	return (1);
 }
 
 Uint32 my_callbackfunc(Uint32 interval, void *param)
@@ -43,10 +52,10 @@ int		main(int ac, char *av[])
 	vis.tim_count = 0;
 
 	if (sdl_init(&vis) != 0)
-		return (1);
+		return (sdl_destroy(&vis));
 	if (load_image(&vis) != 0)
-		return (1);
-	vis.timer = SDL_AddTimer(50, my_callbackfunc, &(vis.tim_count));
+		return (sdl_destroy(&vis));
+	vis.timer = SDL_AddTimer(20, my_callbackfunc, &(vis.tim_count));
 	run = 1;
 	while (run) {
 		while(SDL_PollEvent(&e) != 0) {
@@ -60,12 +69,15 @@ int		main(int ac, char *av[])
 		srcrect.w = (vis.antsimg.w / vis.antsimg.nframes);
 		srcrect.h = vis.antsimg.h;
 
+		dstrect.x = 300;
+		dstrect.y = 300;
+		dstrect.h = 220;
+		dstrect.w = 200;
+
 		SDL_RenderClear(vis.ren);
-		SDL_RenderCopy(vis.ren, vis.ants, &srcrect, NULL);
+		SDL_RenderCopyEx(vis.ren, vis.ants, &srcrect, &dstrect, vis.tim_count % 360, NULL , SDL_FLIP_NONE);
 		SDL_RenderPresent(vis.ren);
 	}
-	SDL_Delay(2000);
 	sdl_destroy(&vis);
-	ft_putendl("Hello World!");
 	return (0);
 }

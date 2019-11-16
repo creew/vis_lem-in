@@ -42,7 +42,7 @@ static int create_window(t_vis *vis)
 								   vis->wheight, SDL_WINDOW_SHOWN);
 	if (vis->window == NULL)
 	{
-		print_sdl_error("SDL_CareateWindow");
+		print_sdl_error("SDL_CreateWindow");
 		return 1;
 	}
 	return (0);
