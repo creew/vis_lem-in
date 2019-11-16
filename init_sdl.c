@@ -62,8 +62,14 @@ int			sdl_init(t_vis *vis)
 	if (create_renderer(vis) != 0)
 		return (1);
 	flags = IMG_INIT_PNG;
-	if (!(IMG_Init(flags) & flags)) {
+	if (!(IMG_Init(flags) & flags))
+	{
 		print_sdl_error(IMG_GetError());
+		return (1);
+	}
+	if (TTF_Init() != 0)
+	{
+		print_sdl_error(TTF_GetError());
 		return (1);
 	}
 	return (0);

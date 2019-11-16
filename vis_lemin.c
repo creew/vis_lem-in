@@ -14,16 +14,19 @@
 
 static int		sdl_destroy(t_vis *vis)
 {
+	SDL_RemoveTimer(vis->timer);
+	vis->timer = 0;
 	SDL_DestroyWindow(vis->window);
 	vis->window = NULL;
 	SDL_DestroyRenderer(vis->ren);
 	vis->ren = NULL;
 	SDL_DestroyTexture(vis->ants);
 	vis->ants = NULL;
-	SDL_RemoveTimer(vis->timer);
-	vis->timer = 0;
+	SDL_DestroyTexture(vis->font_text);
+	vis->font_text = NULL;
 	SDL_Quit();
 	IMG_Quit();
+	TTF_Quit();
 	return (1);
 }
 
@@ -43,9 +46,12 @@ int		main(int ac, char *av[])
 	SDL_Event		e;
 	SDL_Rect 		srcrect;
 	SDL_Rect 		dstrect;
+	SDL_Color		color;
+	SDL_Point		text_point;
 
 	(void)ac;
 	(void)av;
+	ft_bzero(&vis, sizeof(vis));
 	vis.wheight = 1000;
 	vis.wwidth = 1000;
 	vis.window = NULL;
@@ -54,6 +60,8 @@ int		main(int ac, char *av[])
 	if (sdl_init(&vis) != 0)
 		return (sdl_destroy(&vis));
 	if (load_image(&vis) != 0)
+		return (sdl_destroy(&vis));
+	if (load_font(&vis) != 0)
 		return (sdl_destroy(&vis));
 	vis.timer = SDL_AddTimer(20, my_callbackfunc, &(vis.tim_count));
 	run = 1;
@@ -74,7 +82,16 @@ int		main(int ac, char *av[])
 		dstrect.h = 220;
 		dstrect.w = 200;
 
+		text_point.x = 10;
+		text_point.y = 10;
+
+		color.a = 255;
+		color.r = 255;
+		color.g = 0;
+		color.b = 0;
+
 		SDL_RenderClear(vis.ren);
+		text_out(&vis, &text_point,"Привет муравьям!", color);
 		SDL_RenderCopyEx(vis.ren, vis.ants, &srcrect, &dstrect, vis.tim_count % 360, NULL , SDL_FLIP_NONE);
 		SDL_RenderPresent(vis.ren);
 	}

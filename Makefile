@@ -19,7 +19,8 @@ CC_FLAGS = -Wall -Wextra -g3 -O3
 SRCS =	vis_lemin.c \
 		print_error.c \
 		init_sdl.c \
-		load_image.c
+		load_image.c \
+		load_font.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -35,7 +36,8 @@ LIB_DIR_FLAG = $(addprefix -L,$(LIB_DIR))
 
 LIBS = 		ft \
 			SDL2 \
-			SDL2_image
+			SDL2_image \
+			SDL2_ttf
 
 LIBS_FLAG = $(addprefix -l,$(LIBS))
 

@@ -12,5 +12,6 @@ add_executable(vis_lem_in
         print_error.c
         init_sdl.c
         load_image.c
+        load_font.c
         vis_lemin.h)
 
