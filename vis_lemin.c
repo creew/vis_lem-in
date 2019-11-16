@@ -24,6 +24,8 @@ static int		sdl_destroy(t_vis *vis)
 	vis->ants = NULL;
 	SDL_DestroyTexture(vis->font_text);
 	vis->font_text = NULL;
+	TTF_CloseFont(vis->font);
+	vis->font = 0;
 	SDL_Quit();
 	IMG_Quit();
 	TTF_Quit();
@@ -79,20 +81,20 @@ int		main(int ac, char *av[])
 
 		dstrect.x = 300;
 		dstrect.y = 300;
-		dstrect.h = 220;
-		dstrect.w = 200;
+		dstrect.h = 440;
+		dstrect.w = 400;
 
 		text_point.x = 10;
 		text_point.y = 10;
 
 		color.a = 255;
-		color.r = 255;
+		color.r = 0;
 		color.g = 0;
 		color.b = 0;
 
 		SDL_RenderClear(vis.ren);
 		text_out(&vis, &text_point,"Привет муравьям!", color);
-		SDL_RenderCopyEx(vis.ren, vis.ants, &srcrect, &dstrect, vis.tim_count % 360, NULL , SDL_FLIP_NONE);
+		SDL_RenderCopyEx(vis.ren, vis.ants, &srcrect, &dstrect, 0, NULL , SDL_FLIP_NONE);
 		SDL_RenderPresent(vis.ren);
 	}
 	sdl_destroy(&vis);

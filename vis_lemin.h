@@ -28,7 +28,6 @@ typedef struct	s_vis {
 	int				wwidth;
 	int 			wheight;
 
-
 	size_t			tim_count;
 	t_antsimg		antsimg;
 	SDL_Window		*window;

@@ -25,7 +25,7 @@ static int	create_surface(t_vis *vis)
 static int create_renderer(t_vis *vis)
 {
 	vis->ren = SDL_CreateRenderer(vis->window, -1,
-								  SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+		SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (vis->ren == NULL)
 	{
 		print_sdl_error("SDL_CreateRenderer");
