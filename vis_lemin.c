@@ -51,14 +51,14 @@ int		main(int ac, char *av[])
 	SDL_Color		color;
 	SDL_Point		text_point;
 
-	(void)ac;
-	(void)av;
 	ft_bzero(&vis, sizeof(vis));
 	vis.wheight = 1000;
 	vis.wwidth = 1000;
 	vis.window = NULL;
 	vis.tim_count = 0;
 
+	if (ac > 1)
+		read_file(&vis, av[1]);
 	if (sdl_init(&vis) != 0)
 		return (sdl_destroy(&vis));
 	if (load_image(&vis) != 0)

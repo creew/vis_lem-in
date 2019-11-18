@@ -5,7 +5,7 @@ set(CMAKE_C_STANDARD 11)
 
 include_directories(.
                     ./include
-                    ./libft)
+                    ./libft/includes)
 
 add_executable(vis_lem_in
         vis_lemin.c

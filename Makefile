@@ -20,17 +20,18 @@ SRCS =	vis_lemin.c \
 		print_error.c \
 		init_sdl.c \
 		load_image.c \
-		load_font.c
+		load_font.c \
+		read_file.c
 
 OBJS = $(SRCS:.c=.o)
 
 INC_DIR =	./include \
-			./libft
+			./libft/includes
 
 INC_FLAG = $(addprefix -I,$(INC_DIR))
 
 LIB_DIR =	./lib \
-			./libft
+			./libft/
 
 LIB_DIR_FLAG = $(addprefix -L,$(LIB_DIR))
 

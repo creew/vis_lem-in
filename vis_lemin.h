@@ -44,4 +44,6 @@ int		sdl_init(t_vis *vis);
 int 	load_image(t_vis *vis);
 int		load_font(t_vis *vis);
 void	text_out(t_vis *vis, SDL_Point *point, char *txt, SDL_Color color);
+
+int		read_file(t_vis *vis, char *name);
 #endif
