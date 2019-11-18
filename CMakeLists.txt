@@ -13,5 +13,10 @@ add_executable(vis_lem_in
         init_sdl.c
         load_image.c
         load_font.c
-        vis_lemin.h)
+        vis_lemin.h
+        read_file.c
+        links_parse.c
+        line_parse.c
+        rooms_parse.c
+        )
 

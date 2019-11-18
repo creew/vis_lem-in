@@ -21,7 +21,10 @@ SRCS =	vis_lemin.c \
 		init_sdl.c \
 		load_image.c \
 		load_font.c \
-		read_file.c
+		read_file.c \
+		rooms_parse.c \
+		links_parse.c \
+		line_parse.c
 
 OBJS = $(SRCS:.c=.o)
 

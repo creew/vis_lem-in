@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "vis_lemin.h"
+#include <fcntl.h>
 
 static int		sdl_destroy(t_vis *vis)
 {
@@ -41,6 +42,14 @@ Uint32 my_callbackfunc(Uint32 interval, void *param)
 	return (interval);
 }
 
+void		init_lem(t_lemin *lem)
+{
+	ft_bzero(lem, sizeof(*lem));
+	ft_array_init(&lem->rooms, 128);
+	ft_array_init(&lem->links, 128);
+	ft_array_init(&lem->paths, 128);
+}
+
 int		main(int ac, char *av[])
 {
 	t_vis			vis;
@@ -50,6 +59,7 @@ int		main(int ac, char *av[])
 	SDL_Rect 		dstrect;
 	SDL_Color		color;
 	SDL_Point		text_point;
+	int 			fd;
 
 	ft_bzero(&vis, sizeof(vis));
 	vis.wheight = 1000;
@@ -57,8 +67,10 @@ int		main(int ac, char *av[])
 	vis.window = NULL;
 	vis.tim_count = 0;
 
-	if (ac > 1)
-		read_file(&vis, av[1]);
+	init_lem(&vis.lem);
+	if (ac != 2 || (fd = open(av[1], O_RDONLY)) == -1)
+		fd = 0;
+	read_file(&vis, fd);
 	if (sdl_init(&vis) != 0)
 		return (sdl_destroy(&vis));
 	if (load_image(&vis) != 0)
