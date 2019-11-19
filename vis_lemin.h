@@ -55,6 +55,12 @@ typedef struct	s_antsimg {
 	int 	nframes;
 }				t_antsimg;
 
+typedef struct	s_point
+{
+	int		x;
+	int 	y;
+}				t_point;
+
 typedef struct	s_roomdata
 {
 	size_t		index;
@@ -94,6 +100,8 @@ typedef struct	s_vis {
 	t_lemin			lem;
 	int				wwidth;
 	int 			wheight;
+	double			roomsize;
+	double			antscale;
 
 	size_t			tim_count;
 	t_antsimg		antsimg;
