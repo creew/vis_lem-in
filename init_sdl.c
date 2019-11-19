@@ -45,6 +45,7 @@ static int create_window(t_vis *vis)
 		print_sdl_error("SDL_CreateWindow");
 		return 1;
 	}
+	SDL_SetWindowResizable(vis->window, SDL_TRUE);
 	return (0);
 }
 

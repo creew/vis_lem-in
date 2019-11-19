@@ -50,14 +50,11 @@ void		init_lem(t_lemin *lem)
 	ft_array_init(&lem->paths, 128);
 }
 
-int 	get_window_size(SDL_Renderer * ren)
+int 	get_window_size(SDL_Renderer *ren, int *w, int *h)
 {
-	int		w;
-	int 	h;
-
-	if (SDL_GetRendererOutputSize(ren, &w, &h) != 0)
+	if (SDL_GetRendererOutputSize(ren, w, h) != 0)
 	{
-		SDL_Log("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError());
+		SDL_Log("SDL_GetRendererOutputSize failed: %s", SDL_GetError());
 		return 1;
 	}
 	return (0);
@@ -108,13 +105,15 @@ void	rebase_rooms_xy(t_lemin *lem, t_point *min)
 	}
 }
 
-void 	recalc_room_size(t_vis *vis)
+void 	recalc_room_size(t_vis *vis, int w, int h)
 {
 	double	hscale;
 	double	wscale;
 	t_point	wh;
 	t_point	min;
 
+	vis->wwidth = w;
+	vis->wheight = h;
 	get_xy_size(&vis->lem, &wh, &min);
 	wscale = 1.0 * vis->wwidth / (wh.x);
 	hscale = 1.0 * vis->wheight / (wh.y);
@@ -137,10 +136,10 @@ void	draw_links(t_vis *vis)
 	{
 		if (ft_array_get(&vis->lem.links, size, (void **)&link) == 0)
 		{
-			start.x = (link->left->x * vis->roomsize + half_size);
-			start.y = (link->left->y * vis->roomsize + half_size);
-			end.x = (link->right->x * vis->roomsize + half_size);
-			end.y = (link->right->y * vis->roomsize + half_size);
+			start.x = (int)(link->left->x * vis->roomsize + half_size);
+			start.y = (int)(link->left->y * vis->roomsize + half_size);
+			end.x = (int)(link->right->x * vis->roomsize + half_size);
+			end.y = (int)(link->right->y * vis->roomsize + half_size);
 			SDL_SetRenderDrawColor(vis->ren, 0xFF, 0xFF, 0x00, 0x00);
 			SDL_RenderDrawLine(vis->ren, start.x, start.y, end.x, end.y);
 		}
@@ -199,16 +198,11 @@ int		main(int ac, char *av[])
 	t_vis			vis;
 	int 			run;
 	SDL_Event		e;
-
-	SDL_Rect 		dstrect;
-	SDL_Rect 		roomrect;
 	SDL_Color		color;
 	SDL_Point		text_point;
 	int 			fd;
 
 	ft_bzero(&vis, sizeof(vis));
-	vis.wheight = 1000;
-	vis.wwidth = 1000;
 	vis.window = NULL;
 	vis.tim_count = 0;
 
@@ -216,7 +210,7 @@ int		main(int ac, char *av[])
 	if (ac != 2 || (fd = open(av[1], O_RDONLY)) == -1)
 		fd = 0;
 	read_file(&vis, fd);
-	recalc_room_size(&vis);
+	recalc_room_size(&vis, 1000, 500);
 	if (sdl_init(&vis) != 0)
 		return (sdl_destroy(&vis));
 	if (load_image(&vis) != 0)
@@ -227,13 +221,15 @@ int		main(int ac, char *av[])
 	run = 1;
 	while (run) {
 		while(SDL_PollEvent(&e) != 0)
+		{
 			if (e.type == SDL_QUIT)
 				run = 0;
-		dstrect.x = 300;
-		dstrect.y = 300;
-		dstrect.h = 440;
-		dstrect.w = 400;
-
+			if (e.type == SDL_WINDOWEVENT)
+			{
+				if (e.window.event == SDL_WINDOWEVENT_RESIZED)
+					recalc_room_size(&vis, e.window.data1, e.window.data2);
+			}
+		}
 		text_point.x = 10;
 		text_point.y = 10;
 
@@ -241,11 +237,6 @@ int		main(int ac, char *av[])
 		color.r = 0;
 		color.g = 0;
 		color.b = 0;
-
-		roomrect.x = 0;
-		roomrect.y = 0;
-		roomrect.w = vis.roomsize;
-		roomrect.h = vis.roomsize;
 
 		SDL_SetRenderDrawColor(vis.ren, 0x00, 0xFF, 0x00, 0xFF);
 		SDL_RenderClear(vis.ren);
