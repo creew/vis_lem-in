@@ -92,7 +92,12 @@ t_result		add_lem_link(t_lemin *lem, char *str)
 	r1 = str;
 	r2 = ft_strchr(str, '-');
 	if (!r2)
-		return (ERR_WRONG_LINK);
+	{
+		if (!*ft_trim_spaces(str))
+			return (ERR_EMPTY_STR);
+		else
+			return (ERR_WRONG_LINK);
+	}
 	*r2++ = '\0';
 	if (!(room1 = find_room_by_name(&lem->rooms, ft_trim_spaces(r1))) ||
 		!(room2 = find_room_by_name(&lem->rooms, ft_trim_spaces(r2))))

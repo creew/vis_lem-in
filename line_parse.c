@@ -34,7 +34,8 @@ char	*get_next_word(char *str, int *last)
 {
 	char	*end;
 
-	*last = 0;
+	if (last)
+		*last = 0;
 	while ((end = ft_strchr(str, ' ')))
 	{
 		if (end != str)
@@ -44,7 +45,10 @@ char	*get_next_word(char *str, int *last)
 	if (*str != '\0')
 	{
 		if (end == NULL)
-			*last = 1;
+		{
+			if (last)
+				*last = 1;
+		}
 		else
 			*end = '\0';
 		return (str);

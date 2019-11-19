@@ -193,6 +193,42 @@ void	draw_ants(t_vis *vis)
 	}
 }
 
+t_result	process_move(t_vis *vis, char *str)
+{
+	char		*s;
+	int 		index;
+	char		*end;
+	t_roomdata	*rdata;
+
+	while ((s = get_next_word(str, NULL)))
+	{
+		if (*s++ != 'L')
+			return (ERR_NOT_MOVE);
+		index = (int)ft_strtol(s, &end, 10);
+		if (*end++ != '-')
+			return (ERR_NOT_MOVE);
+		if ((rdata = find_room_by_name(&vis->lem.rooms, end)) == NULL)
+			return (ERR_NOT_MOVE);
+
+	}
+}
+
+t_result	read_moves(t_vis *vis, int fd)
+{
+	int		res;
+	char	*s;
+	t_result	ret;
+
+	while ((res = get_next_line(fd, &s)))
+	{
+		if (res < 0)
+			return (ERR_GNL_ERROR);
+		if ((ret = process_move(vis, s)) != RET_OK)
+			return (ret);
+		ft_strdel(&s);
+	}
+}
+
 int		main(int ac, char *av[])
 {
 	t_vis			vis;
@@ -201,15 +237,25 @@ int		main(int ac, char *av[])
 	SDL_Color		color;
 	SDL_Point		text_point;
 	int 			fd;
+	t_result		res;
 
 	ft_bzero(&vis, sizeof(vis));
 	vis.window = NULL;
 	vis.tim_count = 0;
-
 	init_lem(&vis.lem);
 	if (ac != 2 || (fd = open(av[1], O_RDONLY)) == -1)
 		fd = 0;
-	read_file(&vis, fd);
+	res = read_file(&vis, fd);
+	if (res == ERR_EMPTY_STR)
+	{
+		if (check_all(&vis.lem) == RET_OK)
+		{
+			vis.lemarr = ft_calloc(vis.lem.num_ants, sizeof(t_lemdata));
+
+
+			read_moves(&vis, fd);
+		}
+	}
 	recalc_room_size(&vis, 1000, 500);
 	if (sdl_init(&vis) != 0)
 		return (sdl_destroy(&vis));
@@ -241,7 +287,6 @@ int		main(int ac, char *av[])
 		SDL_SetRenderDrawColor(vis.ren, 0x00, 0xFF, 0x00, 0xFF);
 		SDL_RenderClear(vis.ren);
 		text_out(&vis, &text_point,"Привет муравьям!", color);
-
 
 		SDL_SetRenderDrawColor(vis.ren, 0x00, 0x00, 0x00, 0x00);
 		//SDL_RenderDrawRect(vis.ren, &roomrect);

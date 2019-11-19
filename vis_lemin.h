@@ -18,11 +18,12 @@
 # include <SDL2/SDL_ttf.h>
 # include "libft.h"
 
-typedef	int			t_result;
-typedef t_ftarray	t_roomarr;
-typedef t_ftarray	t_linkarr;
-typedef t_ftarray	t_patharr;
-typedef t_ftarray	t_path;
+typedef unsigned char	t_uchar;
+typedef	int				t_result;
+typedef t_ftarray		t_roomarr;
+typedef t_ftarray		t_linkarr;
+typedef t_ftarray		t_patharr;
+typedef t_ftarray		t_lemsarr;
 
 # define RET_OK						(0)
 # define ERR_READ_ANTS_NUMBER		(-1)
@@ -43,6 +44,8 @@ typedef t_ftarray	t_path;
 # define ERR_NO_PATH				(-16)
 # define ERR_INCORRECT_PATH_REMOVE	(-17)
 # define ERR_CMD_NOT_FOUNDED		(-18)
+# define ERR_EMPTY_STR				(-19)
+# define ERR_NOT_MOVE				(-20)
 
 # define LEM_CMD_NONE			(0)
 # define LEM_CMD_START			(1)
@@ -75,6 +78,13 @@ typedef struct	s_roomdata
 	char		name[1];
 }				t_roomdata;
 
+typedef struct	s_lemdata
+{
+	int			room;
+	t_uchar		shift;
+	float		angle;
+}				t_lemdata;
+
 typedef struct	s_linkdata
 {
 	t_roomdata	*left;
@@ -102,6 +112,7 @@ typedef struct	s_vis {
 	int 			wheight;
 	double			roomsize;
 	double			antscale;
+	t_lemdata		*lemarr;
 
 	size_t			tim_count;
 	t_antsimg		antsimg;
@@ -126,4 +137,5 @@ char		*get_next_word(char *str, int *last);
 t_result	add_lem_link(t_lemin *lem, char *str);
 t_result	add_lem_room(t_lemin *lem, char *str, int cmd);
 t_roomdata	*find_room_by_name(t_roomarr *rooms, const char *name);
+t_result	check_all(t_lemin *lem);
 #endif

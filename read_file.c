@@ -71,7 +71,6 @@ int		read_file(t_vis *vis, int fd)
 	t_lemin	*lem;
 
 	lem = &vis->lem;
-
 	while ((res = get_next_line(fd, &s)))
 	{
 		if (res < 0)
