@@ -49,17 +49,16 @@ void			draw_rooms(t_vis *vis)
 	{
 		if (ft_array_get(&vis->lem.rooms, size, (void **)&room) == 0)
 		{
-			roomrect.w = vis->roomsize * 0.95;
-			roomrect.h = vis->roomsize * 0.95;
+			roomrect.w = vis->roomsize * 0.95f;
+			roomrect.h = vis->roomsize * 0.95f;
 			roomrect.x = room->x * vis->roomsize + (vis->roomsize - roomrect.w) / 2;
 			roomrect.y = room->y * vis->roomsize + (vis->roomsize - roomrect.h) / 2;
 			SDL_SetRenderDrawColor(vis->ren, 0xFF, 0x00, 0x00, 0x00);
 			SDL_RenderDrawRect(vis->ren, &roomrect);
+			point.x = roomrect.x + 5;
+			point.y = roomrect.y + 5;
 			if (room->cmd == LEM_CMD_START || room->cmd == LEM_CMD_END)
 			{
-				point.x = roomrect.x;
-				point.y = roomrect.y;
-
 				color.a = 255;
 				color.r = 0;
 				color.g = 0;
@@ -69,16 +68,12 @@ void			draw_rooms(t_vis *vis)
 			}
 			else
 			{
-				point.x = roomrect.x;
-				point.y = roomrect.y;
-
 				color.a = 255;
 				color.r = 0;
 				color.g = 0;
 				color.b = 0;
 				text_out(vis, &point, room->name, color);
 			}
-
 		}
 	}
 }
@@ -87,9 +82,7 @@ static void		draw_ant(t_vis *vis, t_lemdata *ldata)
 {
 	SDL_Rect 	srcrect;
 	SDL_Rect 	roomrect;
-	SDL_FPoint	src;
-	SDL_FPoint	dst;
-	SDL_FPoint	cur;
+	float		dim;
 
 	srcrect.x = 0 + ((vis->tim_count + ldata->shift) % vis->antsimg.nframes) *
 					(vis->antsimg.w / vis->antsimg.nframes);
@@ -97,16 +90,12 @@ static void		draw_ant(t_vis *vis, t_lemdata *ldata)
 	srcrect.w = (vis->antsimg.w / vis->antsimg.nframes);
 	srcrect.h = vis->antsimg.h;
 
-	src.x = (float)ldata->src_room->x * vis->roomsize;
-	src.y = (float)ldata->src_room->y * vis->roomsize;
-	dst.x = (float)ldata->dst_room->x * vis->roomsize;
-	dst.y = (float)ldata->dst_room->y * vis->roomsize;
-	cur.x = src.x + (dst.x - src.x) * vis->moves_count / MOVE_STEPS;
-	cur.y = src.y + (dst.y - src.y) * vis->moves_count / MOVE_STEPS;
-	roomrect.w = vis->roomsize * 0.95;
-	roomrect.h = vis->roomsize * 0.95;
-	roomrect.x = cur.x + (vis->roomsize - roomrect.w) / 2;
-	roomrect.y = cur.y + (vis->roomsize - roomrect.h) / 2;
+
+	dim = vis->roomsize * 0.95f;
+	roomrect.w = (int)(dim);
+	roomrect.h = (int)(dim);
+	roomrect.x = (int)(ldata->x + (vis->roomsize - dim) / 2);
+	roomrect.y = (int)(ldata->y + (vis->roomsize - dim) / 2);
 	SDL_RenderCopyEx(vis->ren, vis->antsimg.texture, &srcrect, &roomrect,
 		ldata->angle, NULL , SDL_FLIP_NONE);
 }

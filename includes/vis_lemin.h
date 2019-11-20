@@ -92,6 +92,8 @@ typedef struct	s_lemdata
 	t_uchar		shift;
 	t_uchar		move;
 	float		angle;
+	float 		x;
+	float 		y;
 }				t_lemdata;
 
 typedef struct	s_linkdata

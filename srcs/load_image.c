@@ -17,14 +17,16 @@ int 	load_image_ants(t_vis *vis)
 	SDL_Surface		*temp_surf;
 
 	temp_surf = IMG_Load(ANTS_IMG);
-	if (temp_surf == NULL) {
+	if (temp_surf == NULL)
+	{
 		print_sdl_error(IMG_GetError());
 		return (1);
 	}
 	vis->antsimg.texture = SDL_CreateTextureFromSurface(vis->ren, temp_surf);
-	if (vis->antsimg.texture == NULL) {
-		print_sdl_error(SDL_GetError());
+	if (vis->antsimg.texture == NULL)
+	{
 		SDL_FreeSurface(temp_surf);
+		print_sdl_error(SDL_GetError());
 		return (1);
 	}
 	vis->antsimg.w = temp_surf->w;
@@ -44,7 +46,8 @@ int 	load_image_buttons(t_vis *vis)
 		return (1);
 	}
 	vis->buttonsimg.texture = SDL_CreateTextureFromSurface(vis->ren, temp_surf);
-	if (vis->buttonsimg.texture == NULL) {
+	if (vis->buttonsimg.texture == NULL)
+	{
 		print_sdl_error(SDL_GetError());
 		SDL_FreeSurface(temp_surf);
 		return (1);

@@ -37,14 +37,18 @@ static  t_result	process_move(t_vis *vis, char *str)
 		str = s + ft_strlen(s) + 1;
 		lemdata = &vis->lemarr[index - 1];
 		if (lemdata->move == 0)
+		{
 			lemdata->src_room = vis->lem.se.start;
+			lemdata->shift = rand() % 255;
+		}
 		else
 			lemdata->src_room = lemdata->dst_room;
 		lemdata->dst_room = rdata;
 		lemdata->angle = atan2f(lemdata->dst_room->y - lemdata->src_room->y,
 			lemdata->dst_room->x - lemdata->src_room->x) * 180 / M_PI + 90;
-		lemdata->shift = rand() % 255;
 		lemdata->move = 1;
+		lemdata->x = lemdata->src_room->x * vis->roomsize;
+		lemdata->y = lemdata->src_room->y * vis->roomsize;
 		ft_array_add(&vis->curlems, lemdata);
 	}
 	return (RET_OK);
@@ -68,9 +72,26 @@ static t_result	init_move(t_vis *vis)
 	return (RET_OK);
 }
 
-static t_result	do_move(t_vis *vis)
+static t_result	do_move(t_vis *vis, size_t count)
 {
+	size_t		size;
+	t_lemdata	*ldata;
+	SDL_FPoint	src;
+	SDL_FPoint	dst;
 
+	size = ft_array_size(&vis->curlems);
+	while (size--)
+	{
+		if (ft_array_get(&vis->curlems, size, (void **)&ldata) == 0)
+		{
+			dst.x = (float)ldata->dst_room->x * vis->roomsize;
+			dst.y = (float)ldata->dst_room->y * vis->roomsize;
+			src.x = (float)ldata->src_room->x * vis->roomsize;
+			src.y = (float)ldata->src_room->y * vis->roomsize;
+			ldata->x = src.x + (dst.x - src.x) * count / MOVE_STEPS;
+			ldata->y = src.y + (dst.y - src.y) * count / MOVE_STEPS;
+		}
+	}
 	return (RET_OK);
 }
 
@@ -110,7 +131,7 @@ int				process_event(t_vis *vis)
 			if (e.user.code == 0)
 				init_move(vis);
 			else if (e.user.code == 1)
-				do_move(vis);
+				do_move(vis, (size_t)e.user.data2);
 			else if (e.user.code == 2)
 				finish_move(vis);
 		}

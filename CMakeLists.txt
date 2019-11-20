@@ -31,13 +31,15 @@ add_executable(
         srcs/draw_all.c
         )
 
-add_dependencies(vis_lem_in libft_target)
+
 
 find_library(SDL2s SDL2 ./lib)
 find_library(SDL2i SDL2_image ./lib)
 find_library(SDL2t SDL2_ttf ./lib)
 find_library(FT ft ./libft)
 target_link_libraries(vis_lem_in PUBLIC ${SDL2s} ${SDL2i} ${SDL2t} ${FT})
+
+add_dependencies(vis_lem_in libft_target)
 
 add_custom_target(
         libft_target
