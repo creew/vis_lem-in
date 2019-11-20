@@ -52,6 +52,8 @@ typedef t_ftarray		t_lemsarr;
 # define LEM_CMD_END			(2)
 # define LEM_CMD_UNKNOWN		(3)
 
+# define MOVE_STEPS				(1000)
+
 # define ANTS_IMG		"./resources/all_ants.png"
 # define PLAY_PAUSE_IMG	"./resources/play_pause.png"
 # define NES_FONT		"./resources/nes.ttf"
@@ -85,8 +87,10 @@ typedef struct	s_roomdata
 
 typedef struct	s_lemdata
 {
-	int			room;
+	t_roomdata	*src_room;
+	t_roomdata	*dst_room;
 	t_uchar		shift;
+	t_uchar		move;
 	float		angle;
 }				t_lemdata;
 
@@ -116,11 +120,13 @@ typedef struct	s_vis {
 	t_lemin			lem;
 	int				wwidth;
 	int 			wheight;
-	double			roomsize;
-	double			antscale;
+	float			roomsize;
+	float			antscale;
 	t_lemdata		*lemarr;
+	t_lemsarr		curlems;
 
 	size_t			tim_count;
+	size_t			moves_count;
 	t_img			antsimg;
 	t_img			buttonsimg;
 	SDL_Window		*window;
@@ -136,10 +142,11 @@ void		print_sdl_error(const char *err);
 
 int			sdl_init(t_vis *vis);
 int 		load_image_ants(t_vis *vis);
+int 		load_image_buttons(t_vis *vis);
 int			load_font(t_vis *vis);
 void		text_out(t_vis *vis, SDL_Point *point, char *txt, SDL_Color color);
 
-int			read_file(t_vis *vis, int fd);
+int			read_file(t_vis *vis);
 int			count_numbers(char *str);
 char		*get_next_word(char *str, int *last);
 t_result	add_lem_link(t_lemin *lem, char *str);
@@ -156,4 +163,6 @@ SDL_TimerID	add_anim_timer(void *param);
 SDL_TimerID	add_moves_timer(void *param);
 
 int			vis_destroy(t_vis *vis);
+
+void		draw_all(t_vis *vis);
 #endif

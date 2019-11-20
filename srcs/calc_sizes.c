@@ -59,10 +59,10 @@ static void		rebase_rooms_xy(t_lemin *lem, t_point *min)
 
 void			recalc_room_size(t_vis *vis, int w, int h)
 {
-	double	hscale;
-	double	wscale;
-	t_point	wh;
-	t_point	min;
+	float		hscale;
+	float		wscale;
+	t_point		wh;
+	t_point		min;
 
 	vis->wwidth = w;
 	vis->wheight = h;

@@ -15,9 +15,11 @@
 static int	create_surface(t_vis *vis)
 {
 	SDL_Surface		*screen_surface;
+	Uint32			color;
 
 	screen_surface = SDL_GetWindowSurface(vis->window);
-	SDL_FillRect(screen_surface, NULL, SDL_MapRGB(screen_surface->format, 0, 255, 0));
+	color = SDL_MapRGB(screen_surface->format, 0, 255, 0);
+	SDL_FillRect(screen_surface, NULL, color);
 	SDL_UpdateWindowSurface(vis->window);
 	return (0);
 }
@@ -39,12 +41,14 @@ static int create_window(t_vis *vis)
 {
 	vis->window = SDL_CreateWindow("Hello, SDL 2!",SDL_WINDOWPOS_UNDEFINED,
 								   SDL_WINDOWPOS_UNDEFINED, vis->wwidth,
-								   vis->wheight, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+								   vis->wheight, SDL_WINDOW_SHOWN);
 	if (vis->window == NULL)
 	{
 		print_sdl_error("SDL_CreateWindow");
 		return 1;
 	}
+	SDL_SetWindowResizable(vis->window, SDL_TRUE);
+	SDL_SetWindowMinimumSize(vis->window, 600, 300);
 	return (0);
 }
 

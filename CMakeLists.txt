@@ -27,6 +27,8 @@ add_executable(
         srcs/draw_elems.c
         srcs/init_timers.c
         srcs/destroy.c
+        srcs/calc_sizes.c
+        srcs/draw_all.c
         )
 
 add_dependencies(vis_lem_in libft_target)

@@ -57,6 +57,7 @@ void	draw_rooms(t_vis *vis)
 	}
 }
 
+/*
 void	draw_ants(t_vis *vis)
 {
 	size_t		size;
@@ -79,6 +80,48 @@ void	draw_ants(t_vis *vis)
 			roomrect.x = room->x * vis->roomsize + (vis->roomsize - roomrect.w) / 2;
 			roomrect.y = room->y * vis->roomsize + (vis->roomsize - roomrect.h) / 2;;
 			SDL_RenderCopyEx(vis->ren, vis->antsimg.texture, &srcrect, &roomrect, 0, NULL , SDL_FLIP_NONE);
+		}
+	}
+}
+*/
+static void		draw_ant(t_vis *vis, t_lemdata *ldata)
+{
+	SDL_Rect 	srcrect;
+	SDL_Rect 	roomrect;
+	SDL_FPoint	src;
+	SDL_FPoint	dst;
+	SDL_FPoint	cur;
+
+	srcrect.x = 0 + ((vis->tim_count + ldata->shift) % vis->antsimg.nframes) *
+					(vis->antsimg.w / vis->antsimg.nframes);
+	srcrect.y = 0;
+	srcrect.w = (vis->antsimg.w / vis->antsimg.nframes);
+	srcrect.h = vis->antsimg.h;
+
+	src.x = (float)ldata->src_room->x * vis->roomsize;
+	src.y = (float)ldata->src_room->y * vis->roomsize;
+	dst.x = (float)ldata->dst_room->x * vis->roomsize;
+	dst.y = (float)ldata->dst_room->y * vis->roomsize;
+	cur.x = src.x + (dst.x - src.x) * vis->moves_count / MOVE_STEPS;
+	cur.y = src.y + (dst.y - src.y) * vis->moves_count / MOVE_STEPS;
+	roomrect.w = vis->roomsize * 0.95;
+	roomrect.h = vis->roomsize * 0.95;
+	roomrect.x = cur.x;
+	roomrect.y = cur.y;;
+	SDL_RenderCopyEx(vis->ren, vis->antsimg.texture, &srcrect, &roomrect, 0, NULL , SDL_FLIP_NONE);
+}
+
+void	draw_ants(t_vis *vis)
+{
+	size_t		size;
+	t_lemdata	*ldata;
+
+	size = ft_array_size(&vis->curlems);
+	while (size--)
+	{
+		if (ft_array_get(&vis->curlems, size, (void **)&ldata) == 0)
+		{
+			draw_ant(vis, ldata);
 		}
 	}
 }

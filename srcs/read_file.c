@@ -64,14 +64,14 @@ static t_result	read_rooms_and_links(int fd, t_lemin *lem)
 	return (RET_OK);
 }
 
-int		read_file(t_vis *vis, int fd)
+int		read_file(t_vis *vis)
 {
 	char	*s;
 	int		res;
 	t_lemin	*lem;
 
 	lem = &vis->lem;
-	while ((res = get_next_line(fd, &s)))
+	while ((res = get_next_line(vis->lem.fd, &s)))
 	{
 		if (res < 0)
 			return (ERR_READ_ANTS_NUMBER);
@@ -82,5 +82,5 @@ int		read_file(t_vis *vis, int fd)
 	if (ft_safe_atoi(s, &lem->num_ants) != FT_ATOI_OK || lem->num_ants < 1)
 		return (ERR_WRONG_ANTS_NUMBER);
 	ft_strdel(&s);
-	return (read_rooms_and_links(fd, lem));
+	return (read_rooms_and_links(vis->lem.fd, lem));
 }

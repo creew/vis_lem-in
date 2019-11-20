@@ -30,7 +30,8 @@ ALL_C =	vis_lemin.c \
 		draw_elems.c \
 		init_timers.c \
 		calc_sizes.c \
-		destroy.c
+		destroy.c \
+		draw_all.c
 
 SRCDIR = ./srcs
 OBJDIR = ./objs

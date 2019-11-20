@@ -14,9 +14,9 @@
 
 static Uint32	anim_tim_callback(Uint32 interval, void *param)
 {
-	int		*count;
+	size_t	*count;
 
-	count = (int *)param;
+	count = (size_t *)param;
 	*count = *count + 1;
 	return (interval);
 }
@@ -28,10 +28,23 @@ SDL_TimerID		add_anim_timer(void *param)
 
 Uint32			moves_tim_callback(Uint32 interval, void *param)
 {
-	int		*count;
+	t_vis			*vis;
+	SDL_Event		event;
+	SDL_UserEvent	userevent;
 
-	count = (int *)param;
-	*count = *count + 1;
+	vis = (t_vis *)param;
+	if (vis->moves_count == 0)
+		userevent.code = 0;
+	else
+		userevent.code = 1;
+	userevent.type = SDL_USEREVENT;
+	userevent.data1 = NULL;
+	userevent.data2 = (void *)vis->moves_count;
+	event.type = SDL_USEREVENT;
+	event.user = userevent;
+	SDL_PushEvent(&event);
+	if (++vis->moves_count == MOVE_STEPS)
+		vis->moves_count = 0;
 	return (interval);
 }
 
