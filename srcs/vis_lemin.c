@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "vis_lemin.h"
-#include "process_events.h"
 #include <fcntl.h>
 
 void		init_lem(t_lemin *lem)
@@ -28,7 +27,6 @@ int		main(int ac, char *av[])
 	t_result		res;
 
 	ft_bzero(&vis, sizeof(vis));
-	sranddev();
 	vis.window = NULL;
 	vis.tim_count = 0;
 	init_lem(&vis.lem);

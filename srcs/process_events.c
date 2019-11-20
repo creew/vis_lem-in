@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "process_events.h"
+#include "vis_lemin.h"
 #include <math.h>
 
 static  t_result	process_move(t_vis *vis, char *str)
@@ -76,8 +76,8 @@ static t_result	do_move(t_vis *vis, size_t count)
 {
 	size_t		size;
 	t_lemdata	*ldata;
-	SDL_FPoint	src;
-	SDL_FPoint	dst;
+	t_fpoint	src;
+	t_fpoint	dst;
 
 	size = ft_array_size(&vis->curlems);
 	while (size--)

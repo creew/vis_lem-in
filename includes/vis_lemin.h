@@ -71,6 +71,12 @@ typedef struct	s_point
 	int 	y;
 }				t_point;
 
+typedef struct	s_fpoint
+{
+	float	x;
+	float 	y;
+}				t_fpoint;
+
 typedef struct	s_roomdata
 {
 	size_t		index;
@@ -167,4 +173,6 @@ SDL_TimerID	add_moves_timer(void *param);
 int			vis_destroy(t_vis *vis);
 
 void		draw_all(t_vis *vis);
+
+int			process_event(t_vis *vis);
 #endif
