@@ -6,22 +6,23 @@ set(CMAKE_C_STANDARD 11)
 include_directories(
         .
         ./include
+        ./includes
         ./libft/includes
 )
 
 
 add_executable(
         vis_lem_in
-        vis_lemin.c
-        print_error.c
-        init_sdl.c
-        load_image.c
-        load_font.c
-        vis_lemin.h
-        read_file.c
-        links_parse.c
-        line_parse.c
-        rooms_parse.c
+        srcs/vis_lemin.c
+        srcs/print_error.c
+        srcs/init_sdl.c
+        srcs/load_image.c
+        srcs/load_font.c
+        srcs/read_file.c
+        srcs/links_parse.c
+        srcs/line_parse.c
+        srcs/rooms_parse.c
+        srcs/check_all.c
         )
 
 add_dependencies(vis_lem_in libft_target)

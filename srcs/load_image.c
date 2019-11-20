@@ -16,9 +16,8 @@ int 	load_image(t_vis *vis)
 {
 	SDL_Surface		*temp_surf;
 
-	temp_surf = IMG_Load("all_ants.png");
+	temp_surf = IMG_Load(ANTS_IMG);
 	if (temp_surf == NULL) {
-		print_sdl_error("Can't load image");
 		print_sdl_error(IMG_GetError());
 		return (1);
 	}

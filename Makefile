@@ -16,7 +16,7 @@ CC = gcc
 
 CC_FLAGS = -Wall -Wextra -g3 -O3
 
-SRCS =	vis_lemin.c \
+ALL_C =	vis_lemin.c \
 		print_error.c \
 		init_sdl.c \
 		load_image.c \
@@ -24,17 +24,24 @@ SRCS =	vis_lemin.c \
 		read_file.c \
 		rooms_parse.c \
 		links_parse.c \
-		line_parse.c
+		line_parse.c \
+		check_all.c
 
-OBJS = $(SRCS:.c=.o)
+SRCDIR = ./srcs
+OBJDIR = ./objs
+
+ALL_OBJ = $(ALL_C:%.c=%.o)
+
+OBJS = $(addprefix $(OBJDIR)/, $(ALL_OBJ))
 
 INC_DIR =	./include \
-			./libft/includes
+			./libft/includes \
+			./includes
 
 INC_FLAG = $(addprefix -I,$(INC_DIR))
 
 LIB_DIR =	./lib \
-			./libft/
+			./libft \
 
 LIB_DIR_FLAG = $(addprefix -L,$(LIB_DIR))
 
@@ -45,15 +52,20 @@ LIBS = 		ft \
 
 LIBS_FLAG = $(addprefix -l,$(LIBS))
 
-HEADERS = ./vis_lemin.h
+HEADERS = ./includes/vis_lemin.h
 
-all: $(NAME)
+all: lib $(NAME)
+
+lib:
+	make -C ./libft
 
 $(NAME): $(OBJS)
-	make -C ./libft
 	$(CC) $(CC_FLAGS) $^ $(LIB_DIR_FLAG) $(LIBS_FLAG) -o $@
 
-%.o: %.c $(HEADERS)
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.c $(HEADERS) | $(OBJDIR)
 	$(CC) $(CC_FLAGS) $(INC_FLAG) -c $< -o $@
 
 clean:
@@ -65,3 +77,5 @@ fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
+
+.PHONY: lib clean fclean all re

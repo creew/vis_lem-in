@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "vis_lemin.h"
+
 #include <fcntl.h>
 
 static int		sdl_destroy(t_vis *vis)
@@ -198,9 +199,10 @@ t_result	process_move(t_vis *vis, char *str)
 	char		*s;
 	int 		index;
 	char		*end;
+	int			last;
 	t_roomdata	*rdata;
 
-	while ((s = get_next_word(str, NULL)))
+	while ((s = get_next_word(str, &last)))
 	{
 		if (*s++ != 'L')
 			return (ERR_NOT_MOVE);
@@ -209,7 +211,9 @@ t_result	process_move(t_vis *vis, char *str)
 			return (ERR_NOT_MOVE);
 		if ((rdata = find_room_by_name(&vis->lem.rooms, end)) == NULL)
 			return (ERR_NOT_MOVE);
-
+		if (last)
+			break;
+		str = s + ft_strlen(s) + 1;
 	}
 }
 
@@ -251,8 +255,6 @@ int		main(int ac, char *av[])
 		if (check_all(&vis.lem) == RET_OK)
 		{
 			vis.lemarr = ft_calloc(vis.lem.num_ants, sizeof(t_lemdata));
-
-
 			read_moves(&vis, fd);
 		}
 	}

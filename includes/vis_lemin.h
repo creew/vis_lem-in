@@ -52,6 +52,10 @@ typedef t_ftarray		t_lemsarr;
 # define LEM_CMD_END			(2)
 # define LEM_CMD_UNKNOWN		(3)
 
+# define ANTS_IMG		"./resources/all_ants.png"
+# define PLAY_PAUSE_IMG	"./resources/play_pause.png"
+# define NES_FONT		"./resources/nes.ttf"
+
 typedef struct	s_antsimg {
 	int		w;
 	int 	h;
@@ -121,6 +125,7 @@ typedef struct	s_vis {
 	SDL_Texture		*ants;
 	SDL_Texture		*font_text;
 	SDL_TimerID		timer;
+	SDL_TimerID		moves_tim;
 	TTF_Font		*font;
 }				t_vis;
 
