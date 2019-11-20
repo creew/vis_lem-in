@@ -44,7 +44,16 @@ Uint32			moves_tim_callback(Uint32 interval, void *param)
 	event.user = userevent;
 	SDL_PushEvent(&event);
 	if (++vis->moves_count == MOVE_STEPS)
+	{
 		vis->moves_count = 0;
+		userevent.code = 2;
+		userevent.type = SDL_USEREVENT;
+		userevent.data1 = NULL;
+		userevent.data2 = (void *)vis->moves_count;
+		event.type = SDL_USEREVENT;
+		event.user = userevent;
+		SDL_PushEvent(&event);
+	}
 	return (interval);
 }
 

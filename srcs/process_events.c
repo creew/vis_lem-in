@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "process_events.h"
+#include <math.h>
 
 static  t_result	process_move(t_vis *vis, char *str)
 {
@@ -40,6 +41,8 @@ static  t_result	process_move(t_vis *vis, char *str)
 		else
 			lemdata->src_room = lemdata->dst_room;
 		lemdata->dst_room = rdata;
+		lemdata->angle = atan2f(lemdata->dst_room->y - lemdata->src_room->y,
+			lemdata->dst_room->x - lemdata->src_room->x) * 180 / M_PI + 90;
 		lemdata->shift = rand() % 255;
 		lemdata->move = 1;
 		ft_array_add(&vis->curlems, lemdata);
@@ -71,8 +74,18 @@ static t_result	do_move(t_vis *vis)
 	return (RET_OK);
 }
 
+static void		set_move(void *data)
+{
+	t_lemdata	*ldata;
+
+	ldata = (t_lemdata *)data;
+	if (ldata->dst_room->cmd == LEM_CMD_END)
+		ldata->move = 2;
+}
+
 static t_result	finish_move(t_vis *vis)
 {
+	ft_array_foreach(&vis->curlems, set_move);
 	vis->curlems.num_elems = 0;
 	return (RET_OK);
 }

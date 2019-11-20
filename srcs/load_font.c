@@ -14,7 +14,7 @@
 
 int		load_font(t_vis *vis)
 {
-	vis->font = TTF_OpenFont(NES_FONT, 24);
+	vis->font = TTF_OpenFont(NES_FONT, 12);
 	if (vis->font == NULL)
 	{
 		print_sdl_error(TTF_GetError());
