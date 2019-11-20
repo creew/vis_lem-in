@@ -25,7 +25,12 @@ ALL_C =	vis_lemin.c \
 		rooms_parse.c \
 		links_parse.c \
 		line_parse.c \
-		check_all.c
+		check_all.c \
+		process_events.c \
+		draw_elems.c \
+		init_timers.c \
+		calc_sizes.c \
+		destroy.c
 
 SRCDIR = ./srcs
 OBJDIR = ./objs

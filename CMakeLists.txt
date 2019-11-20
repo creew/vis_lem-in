@@ -23,6 +23,10 @@ add_executable(
         srcs/line_parse.c
         srcs/rooms_parse.c
         srcs/check_all.c
+        srcs/process_events.c
+        srcs/draw_elems.c
+        srcs/init_timers.c
+        srcs/destroy.c
         )
 
 add_dependencies(vis_lem_in libft_target)

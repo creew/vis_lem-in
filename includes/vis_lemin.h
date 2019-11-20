@@ -56,11 +56,12 @@ typedef t_ftarray		t_lemsarr;
 # define PLAY_PAUSE_IMG	"./resources/play_pause.png"
 # define NES_FONT		"./resources/nes.ttf"
 
-typedef struct	s_antsimg {
-	int		w;
-	int 	h;
-	int 	nframes;
-}				t_antsimg;
+typedef struct	s_img {
+	SDL_Texture		*texture;
+	int				w;
+	int 			h;
+	int 			nframes;
+}				t_img;
 
 typedef struct	s_point
 {
@@ -104,6 +105,7 @@ typedef	struct	s_borders
 typedef struct	s_lemin
 {
 	int			num_ants;
+	int			fd;
 	t_roomarr	rooms;
 	t_linkarr	links;
 	t_patharr	paths;
@@ -119,12 +121,13 @@ typedef struct	s_vis {
 	t_lemdata		*lemarr;
 
 	size_t			tim_count;
-	t_antsimg		antsimg;
+	t_img			antsimg;
+	t_img			buttonsimg;
 	SDL_Window		*window;
 	SDL_Renderer	*ren;
-	SDL_Texture		*ants;
+
 	SDL_Texture		*font_text;
-	SDL_TimerID		timer;
+	SDL_TimerID		anim_tim;
 	SDL_TimerID		moves_tim;
 	TTF_Font		*font;
 }				t_vis;
@@ -132,7 +135,7 @@ typedef struct	s_vis {
 void		print_sdl_error(const char *err);
 
 int			sdl_init(t_vis *vis);
-int 		load_image(t_vis *vis);
+int 		load_image_ants(t_vis *vis);
 int			load_font(t_vis *vis);
 void		text_out(t_vis *vis, SDL_Point *point, char *txt, SDL_Color color);
 
@@ -143,4 +146,14 @@ t_result	add_lem_link(t_lemin *lem, char *str);
 t_result	add_lem_room(t_lemin *lem, char *str, int cmd);
 t_roomdata	*find_room_by_name(t_roomarr *rooms, const char *name);
 t_result	check_all(t_lemin *lem);
+void		recalc_room_size(t_vis *vis, int w, int h);
+
+void		draw_links(t_vis *vis);
+void		draw_rooms(t_vis *vis);
+void		draw_ants(t_vis *vis);
+
+SDL_TimerID	add_anim_timer(void *param);
+SDL_TimerID	add_moves_timer(void *param);
+
+int			vis_destroy(t_vis *vis);
 #endif
