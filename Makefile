@@ -54,7 +54,8 @@ LIB_DIR_FLAG = $(addprefix -L,$(LIB_DIR))
 LIBS = 		ft \
 			SDL2 \
 			SDL2_image \
-			SDL2_ttf
+			SDL2_ttf \
+			m
 
 LIBS_FLAG = $(addprefix -l,$(LIBS))
 

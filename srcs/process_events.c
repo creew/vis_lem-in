@@ -95,10 +95,11 @@ static t_result	do_move(t_vis *vis, size_t count)
 	return (RET_OK);
 }
 
-static void		set_move(void *data)
+static void		set_move(void *data, void *udata)
 {
 	t_lemdata	*ldata;
 
+	(void)udata;
 	ldata = (t_lemdata *)data;
 	if (ldata->dst_room->cmd == LEM_CMD_END)
 		ldata->move = 2;
@@ -106,7 +107,7 @@ static void		set_move(void *data)
 
 static t_result	finish_move(t_vis *vis)
 {
-	ft_array_foreach(&vis->curlems, set_move);
+	ft_array_foreach(&vis->curlems, set_move, NULL);
 	vis->curlems.num_elems = 0;
 	return (RET_OK);
 }
