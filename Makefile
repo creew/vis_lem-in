@@ -31,7 +31,8 @@ ALL_C =	vis_lemin.c \
 		init_timers.c \
 		calc_sizes.c \
 		destroy.c \
-		draw_all.c
+		draw_all.c \
+		get_dims.c
 
 SRCDIR = ./srcs
 OBJDIR = ./objs
@@ -40,14 +41,16 @@ ALL_OBJ = $(ALL_C:%.c=%.o)
 
 OBJS = $(addprefix $(OBJDIR)/, $(ALL_OBJ))
 
-INC_DIR =	./include \
-			./libft/includes \
-			./includes
+INC_DIR =	./libft/includes \
+			./includes \
+			/usr/include \
+#			./include
 
 INC_FLAG = $(addprefix -I,$(INC_DIR))
 
-LIB_DIR =	./lib \
-			./libft \
+LIB_DIR =	./libft \
+			/usr/lib/x86_64-linux-gnu \
+#			./lib
 
 LIB_DIR_FLAG = $(addprefix -L,$(LIB_DIR))
 

@@ -111,6 +111,41 @@ static t_result	finish_move(t_vis *vis)
 	vis->curlems.num_elems = 0;
 	return (RET_OK);
 }
+void			handle_mouse(SDL_Event *e, SDL_Window *window)
+{
+	char str[64];
+	char *s;
+	if (e->button.button == SDL_BUTTON_LEFT)
+	{
+		ft_strcpy(str, "Left button was pressed on x: ");
+		s = ft_itoa(e->button.x);
+		ft_strcat(str, s);
+		ft_strdel(&s);
+		ft_strcat(str, ", y: ");
+		s = ft_itoa(e->button.y);
+		ft_strcat(str, s);
+		ft_strdel(&s);
+		ft_strcat(str, "\n");
+		SDL_ShowSimpleMessageBox(0, "Mouse", str, window);
+	}
+	else if (e->button.button == SDL_BUTTON_RIGHT)
+	{
+		ft_strcpy(str, "Right button was pressed on x: ");
+		s = ft_itoa(e->button.x);
+		ft_strcat(str, s);
+		ft_strdel(&s);
+		ft_strcat(str, ", y: ");
+		s = ft_itoa(e->button.y);
+		ft_strcat(str, s);
+		ft_strdel(&s);
+		ft_strcat(str, "\n");
+		SDL_ShowSimpleMessageBox(0, "Mouse", str, window);
+	}
+	else
+	{
+		SDL_ShowSimpleMessageBox(0, "Mouse", "Some other button was pressed!", window);
+	}
+}
 
 int				process_event(t_vis *vis)
 {
@@ -136,6 +171,11 @@ int				process_event(t_vis *vis)
 			else if (e.user.code == 2)
 				finish_move(vis);
 		}
+		else if (e.type == SDL_MOUSEBUTTONDOWN)
+		{
+			handle_mouse(&e, vis->window);
+		}
+
 	}
 	return (run);
 }

@@ -65,6 +65,14 @@ typedef struct	s_img {
 	int 			nframes;
 }				t_img;
 
+typedef struct	s_rect
+{
+	int 			x;
+	int				y;
+	int				w;
+	int				h;
+}				t_rect;
+
 typedef struct	s_point
 {
 	int		x;
@@ -166,6 +174,7 @@ void		recalc_room_size(t_vis *vis, int w, int h);
 void		draw_links(t_vis *vis);
 void		draw_rooms(t_vis *vis);
 void		draw_ants(t_vis *vis);
+void 		draw_handles(t_vis *vis);
 
 SDL_TimerID	add_anim_timer(void *param);
 SDL_TimerID	add_moves_timer(void *param);
@@ -175,4 +184,7 @@ int			vis_destroy(t_vis *vis);
 void		draw_all(t_vis *vis);
 
 int			process_event(t_vis *vis);
+
+void		get_main_rect(t_rect *rect, int ww, int wh);
+void		get_handles_rect(t_rect *rect, int ww, int wh);
 #endif

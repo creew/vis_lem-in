@@ -33,5 +33,6 @@ void		draw_all(t_vis *vis)
 	draw_links(vis);
 	draw_rooms(vis);
 	draw_ants(vis);
+	draw_handles(vis);
 	SDL_RenderPresent(vis->ren);
 }

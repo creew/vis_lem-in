@@ -29,6 +29,7 @@ add_executable(
         srcs/destroy.c
         srcs/calc_sizes.c
         srcs/draw_all.c
+        srcs/get_dims.c
         )
 
 
