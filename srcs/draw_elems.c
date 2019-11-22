@@ -138,11 +138,7 @@ void 	draw_handles(t_vis *vis)
 		srcrect.w = (vis->buttonsimg.w / vis->buttonsimg.nframes);
 		srcrect.h = vis->buttonsimg.h;
 
-
-		dstrect.w = (int)(handles.w);
-		dstrect.h = (int)(handles.w);
-		dstrect.x = handles.x;
-		dstrect.y = handles.y + index * handles.w + index * 20;
+		get_handle_rect(&dstrect, index, vis->wwidth, vis->wheight);
 		SDL_RenderCopy(vis->ren, vis->buttonsimg.texture, &srcrect, &dstrect);
 	}
 }

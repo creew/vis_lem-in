@@ -65,13 +65,7 @@ typedef struct	s_img {
 	int 			nframes;
 }				t_img;
 
-typedef struct	s_rect
-{
-	int 			x;
-	int				y;
-	int				w;
-	int				h;
-}				t_rect;
+typedef	SDL_Rect	t_rect;
 
 typedef struct	s_point
 {
@@ -143,6 +137,7 @@ typedef struct	s_vis {
 
 	size_t			tim_count;
 	size_t			moves_count;
+	int 			paused;
 	t_img			antsimg;
 	t_img			buttonsimg;
 	SDL_Window		*window;
@@ -187,4 +182,5 @@ int			process_event(t_vis *vis);
 
 void		get_main_rect(t_rect *rect, int ww, int wh);
 void		get_handles_rect(t_rect *rect, int ww, int wh);
+void 		get_handle_rect(t_rect *rect, int index, int ww, int wh);
 #endif

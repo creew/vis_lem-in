@@ -111,39 +111,57 @@ static t_result	finish_move(t_vis *vis)
 	vis->curlems.num_elems = 0;
 	return (RET_OK);
 }
-void			handle_mouse(SDL_Event *e, SDL_Window *window)
+
+int				get_index_handle(int x, int y, t_vis *vis)
 {
-	char str[64];
-	char *s;
+	int		size;
+	t_rect	rect;
+	SDL_Point	point;
+	point.x = x;
+	point.y = y;
+
+	size = vis->buttonsimg.nframes;
+	while (size--)
+	{
+		get_handle_rect(&rect, size, vis->wwidth, vis->wheight);
+		if (SDL_PointInRect(&point, &rect))
+			return (size);
+	}
+	return (-1);
+}
+
+void			handle_mouse(SDL_Event *e, SDL_Window *window, t_vis *vis)
+{
+	int		index;
+
 	if (e->button.button == SDL_BUTTON_LEFT)
 	{
-		ft_strcpy(str, "Left button was pressed on x: ");
-		s = ft_itoa(e->button.x);
-		ft_strcat(str, s);
-		ft_strdel(&s);
-		ft_strcat(str, ", y: ");
-		s = ft_itoa(e->button.y);
-		ft_strcat(str, s);
-		ft_strdel(&s);
-		ft_strcat(str, "\n");
-		SDL_ShowSimpleMessageBox(0, "Mouse", str, window);
-	}
-	else if (e->button.button == SDL_BUTTON_RIGHT)
-	{
-		ft_strcpy(str, "Right button was pressed on x: ");
-		s = ft_itoa(e->button.x);
-		ft_strcat(str, s);
-		ft_strdel(&s);
-		ft_strcat(str, ", y: ");
-		s = ft_itoa(e->button.y);
-		ft_strcat(str, s);
-		ft_strdel(&s);
-		ft_strcat(str, "\n");
-		SDL_ShowSimpleMessageBox(0, "Mouse", str, window);
-	}
-	else
-	{
-		SDL_ShowSimpleMessageBox(0, "Mouse", "Some other button was pressed!", window);
+		if ((index = get_index_handle(e->button.x, e->button.y, vis)) != -1)
+		{
+			if (index == 0)
+			{
+
+
+			}
+			else if (index == 1)
+			{
+				if (vis->paused)
+					vis->paused = 0;
+			}
+			else if (index == 2)
+			{
+				SDL_RemoveTimer(vis->moves_tim);
+				vis->moves_count = 0;
+			}
+			else if (index == 3)
+			{
+				vis->paused = !vis->paused;
+			}
+			else if (index == 4)
+			{
+
+			}
+		}
 	}
 }
 
@@ -171,9 +189,9 @@ int				process_event(t_vis *vis)
 			else if (e.user.code == 2)
 				finish_move(vis);
 		}
-		else if (e.type == SDL_MOUSEBUTTONDOWN)
+		else if (e.type == SDL_MOUSEBUTTONUP)
 		{
-			handle_mouse(&e, vis->window);
+			handle_mouse(&e, vis->window, vis);
 		}
 
 	}

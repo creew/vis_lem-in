@@ -43,14 +43,15 @@ OBJS = $(addprefix $(OBJDIR)/, $(ALL_OBJ))
 
 INC_DIR =	./libft/includes \
 			./includes \
-			/usr/include \
-#			./include
+			./include
+#			/usr/include \
+
 
 INC_FLAG = $(addprefix -I,$(INC_DIR))
 
 LIB_DIR =	./libft \
-			/usr/lib/x86_64-linux-gnu \
-#			./lib
+			./lib
+#			/usr/lib/x86_64-linux-gnu \
 
 LIB_DIR_FLAG = $(addprefix -L,$(LIB_DIR))
 

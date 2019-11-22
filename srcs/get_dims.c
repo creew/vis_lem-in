@@ -20,3 +20,14 @@ void	get_handles_rect(t_rect *rect, int ww, int wh)
 		rect->w = 80;
 	rect->h = wh;
 }
+
+void 	get_handle_rect(t_rect *rect, int index, int ww, int wh)
+{
+	t_rect	handles;
+
+	get_handles_rect(&handles, ww, wh);
+	rect->x = 1;
+	rect->y = 1 + (handles.w - 2) * index + 20 * index;
+	rect->w = handles.w - 2;
+	rect->h = handles.w - 2;
+}
