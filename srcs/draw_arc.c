@@ -12,8 +12,6 @@
 
 #include "vis_lemin.h"
 
-#include <dns_util.h>
-
 static void	draw_quad(SDL_Renderer *ren, SDL_Point c, SDL_Point add, int q)
 {
 	if (q == 2)
