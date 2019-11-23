@@ -60,7 +60,7 @@ void			draw_rooms(t_vis *vis)
 			roomrect.x = main.x + room->x * vis->roomsize + (vis->roomsize - roomrect.w) / 2;
 			roomrect.y = main.y + room->y * vis->roomsize + (vis->roomsize - roomrect.h) / 2;
 			SDL_SetRenderDrawColor(vis->ren, 0xFF, 0x00, 0x00, 0x00);
-			draw_round_rect(vis->ren, &roomrect, ft_min(roomrect.w, roomrect.h) / 5);
+			draw_filled_round_rect(vis->ren, &roomrect, ft_min(roomrect.w, roomrect.h) / 5);
 			point.x = roomrect.x + 5;
 			point.y = roomrect.y + 5;
 			if (room->cmd == LEM_CMD_START || room->cmd == LEM_CMD_END)
@@ -127,11 +127,19 @@ void 	draw_handles(t_vis *vis)
 {
 	SDL_Rect 	srcrect;
 	SDL_Rect 	dstrect;
-	t_rect		handles;
+	SDL_Rect	handles;
+	SDL_Rect	frame;
+
 	int 		index;
 
 	index = -1;
 	get_handles_rect(&handles, vis->wwidth, vis->wheight);
+	frame.x = handles.x + 2;
+	frame.y = handles.y + 2;
+	frame.w = handles.w - 4;
+	frame.h = handles.h - 4;
+	SDL_SetRenderDrawColor(vis->ren, 0xFF, 0xFF, 0x00, 0xFF);
+	draw_filled_round_rect(vis->ren, &frame, 10);
 	while (++index < vis->buttonsimg.nframes)
 	{
 		srcrect.x = 0 + (index) * (vis->buttonsimg.w / vis->buttonsimg.nframes);

@@ -12,6 +12,8 @@
 
 #include "vis_lemin.h"
 
+#include <dns_util.h>
+
 static void	draw_quad(SDL_Renderer *ren, SDL_Point c, SDL_Point add, int q)
 {
 	if (q == 2)
@@ -67,6 +69,33 @@ void	draw_round_rect(SDL_Renderer *ren, SDL_Rect *rect, int r)
 	draw_arc(ren, p, 4, r);
 }
 
+void	draw_filled_round_rect(SDL_Renderer *ren, SDL_Rect *rect, int r)
+{
+	int		y0;
+	int		x;
+	int 	x0;
+	int		w;
+
+	y0 = -1;
+	while (++y0 < rect->h - 2 * r)
+	{
+		SDL_RenderDrawLine(ren, rect->x, rect->y + r + y0, rect->x + rect->w,
+				rect->y + r + y0);
+	}
+	y0 = -1;
+	while (++y0 < r)
+	{
+		x = (int)(sqrt(r * r - y0 * y0) + 0.5);
+
+		w = rect->w - r * 2 + x * 2;
+		x0 = (rect->w - w) / 2;
+		SDL_RenderDrawLine(ren, rect->x + x0 + 1 , rect->y + r - y0,
+						   rect->x + x0 + w, rect->y + r - y0);
+		SDL_RenderDrawLine(ren, rect->x + x0 + 1 , rect->y + rect->h - r + y0,
+						   rect->x + x0 + w, rect->y + rect->h - r + y0);
+	}
+}
+
 void	draw_line(SDL_Renderer *ren, SDL_Point *start, SDL_Point *end, int th)
 {
 	SDL_Texture *text;
@@ -115,7 +144,4 @@ void	draw_line(SDL_Renderer *ren, SDL_Point *start, SDL_Point *end, int th)
 	center.y = in.h / 2;
 	SDL_RenderCopyEx(ren, text, &in, &out, angle, &center , SDL_FLIP_NONE);
 	SDL_DestroyTexture(text);
-
-
-
 }

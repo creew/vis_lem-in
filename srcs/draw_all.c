@@ -27,7 +27,7 @@ void		draw_all(t_vis *vis)
 
 	SDL_SetRenderDrawColor(vis->ren, 0x00, 0xFF, 0x00, 0xFF);
 	SDL_RenderClear(vis->ren);
-	text_out(vis, &point,"Привет муравьям!", color);
+	//text_out(vis, &point,"Привет муравьям!", color);
 
 	SDL_SetRenderDrawColor(vis->ren, 0x00, 0x00, 0x00, 0x00);
 	draw_links(vis);
