@@ -35,10 +35,7 @@ Uint32			moves_tim_callback(Uint32 interval, void *param)
 	vis = (t_vis *)param;
 	if (!vis->paused)
 	{
-		if (vis->moves_count == 0)
-			userevent.code = 0;
-		else
-			userevent.code = 1;
+		userevent.code = vis->moves_count == 0 ? 0 : 1;
 		userevent.type = SDL_USEREVENT;
 		userevent.data1 = NULL;
 		userevent.data2 = (void *)vis->moves_count;
@@ -49,8 +46,6 @@ Uint32			moves_tim_callback(Uint32 interval, void *param)
 		{
 			vis->moves_count = 0;
 			userevent.code = 2;
-			userevent.type = SDL_USEREVENT;
-			userevent.data1 = NULL;
 			userevent.data2 = (void *)vis->moves_count;
 			event.type = SDL_USEREVENT;
 			event.user = userevent;

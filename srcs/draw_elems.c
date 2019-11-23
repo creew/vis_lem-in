@@ -59,7 +59,7 @@ void			draw_rooms(t_vis *vis)
 			roomrect.x = main.x + room->x * vis->roomsize + (vis->roomsize - roomrect.w) / 2;
 			roomrect.y = main.y + room->y * vis->roomsize + (vis->roomsize - roomrect.h) / 2;
 			SDL_SetRenderDrawColor(vis->ren, 0xFF, 0x00, 0x00, 0x00);
-			SDL_RenderDrawRect(vis->ren, &roomrect);
+			draw_round_rect(vis->ren, &roomrect, ft_min(roomrect.w, roomrect.h) / 5);
 			point.x = roomrect.x + 5;
 			point.y = roomrect.y + 5;
 			if (room->cmd == LEM_CMD_START || room->cmd == LEM_CMD_END)

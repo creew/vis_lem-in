@@ -147,6 +147,10 @@ void			handle_mouse(SDL_Event *e, SDL_Window *window, t_vis *vis)
 			{
 				if (vis->paused)
 					vis->paused = 0;
+				if (vis->stopped)
+				{
+
+				}
 			}
 			else if (index == 2)
 			{

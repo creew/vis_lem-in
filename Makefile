@@ -32,7 +32,8 @@ ALL_C =	vis_lemin.c \
 		calc_sizes.c \
 		destroy.c \
 		draw_all.c \
-		get_dims.c
+		get_dims.c \
+		draw_arc.c
 
 SRCDIR = ./srcs
 OBJDIR = ./objs

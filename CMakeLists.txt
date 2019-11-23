@@ -30,6 +30,7 @@ add_executable(
         srcs/calc_sizes.c
         srcs/draw_all.c
         srcs/get_dims.c
+        srcs/draw_arc.c
         )
 
 

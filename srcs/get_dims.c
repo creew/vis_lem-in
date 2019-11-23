@@ -7,7 +7,7 @@ void	get_main_rect(t_rect *rect, int ww, int wh)
 	get_handles_rect(&handles, ww, wh);
 	rect->x = handles.w;
 	rect->y = 0;
-	rect->w = wh - handles.w;
+	rect->w = ww - handles.w;
 	rect->h = wh;
 }
 

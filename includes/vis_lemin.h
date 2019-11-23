@@ -131,13 +131,13 @@ typedef struct	s_vis {
 	int				wwidth;
 	int 			wheight;
 	float			roomsize;
-	float			antscale;
 	t_lemdata		*lemarr;
 	t_lemsarr		curlems;
 
 	size_t			tim_count;
 	size_t			moves_count;
 	int 			paused;
+	int 			stopped;
 	t_img			antsimg;
 	t_img			buttonsimg;
 	SDL_Window		*window;
@@ -183,4 +183,6 @@ int			process_event(t_vis *vis);
 void		get_main_rect(t_rect *rect, int ww, int wh);
 void		get_handles_rect(t_rect *rect, int ww, int wh);
 void 		get_handle_rect(t_rect *rect, int index, int ww, int wh);
+void	draw_arc(SDL_Renderer * ren, SDL_Point c, int q, int r);
+void	draw_round_rect(SDL_Renderer *ren, SDL_Rect *rect, int r);
 #endif
