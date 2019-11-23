@@ -66,3 +66,56 @@ void	draw_round_rect(SDL_Renderer *ren, SDL_Rect *rect, int r)
 	p.y = rect->y + r;
 	draw_arc(ren, p, 4, r);
 }
+
+void	draw_line(SDL_Renderer *ren, SDL_Point *start, SDL_Point *end, int th)
+{
+	SDL_Texture *text;
+	int			len;
+	Uint32		*pixels;
+	int 		pitch;
+	int 		tw, thi;
+	float 		angle;
+
+	int 		w, h;
+	Uint32 		format;
+	SDL_Rect	in, out;
+	SDL_Point	center;
+
+
+	len = (int)sqrtf((end->x - start->x) * (end->x - start->x) +
+					 (end->y - start->y) * (end->y - start->y));
+	text = SDL_CreateTexture(ren,SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, len, th);
+
+	SDL_QueryTexture(text, &format, NULL, &w, &h);
+	if (SDL_LockTexture(text, NULL, (void**)&pixels, &pitch))
+		print_sdl_error(SDL_GetError());
+
+	SDL_PixelFormat *pixelFormat = SDL_AllocFormat(SDL_PIXELFORMAT_RGBA8888);
+	Uint32 color = SDL_MapRGB(pixelFormat, 255, 0, 0);
+	thi = th;
+	while (thi--)
+	{
+		tw = len;
+		while (tw--)
+			pixels[thi * (pitch / sizeof(unsigned int)) + tw] = color ;
+	}
+	SDL_FreeFormat(pixelFormat);
+	SDL_UnlockTexture(text);
+	angle = atan2f(end->y - start->y, end->x - start->x) * 180 / M_PI;
+	in.x = 0;
+	in.y = 0;
+	in.w = len;
+	in.h = th;
+	out.x = start->x;
+	out.y = start->y;
+	out.w = len;
+	out.h = th;
+
+	center.x = in.x;
+	center.y = in.h / 2;
+	SDL_RenderCopyEx(ren, text, &in, &out, angle, &center , SDL_FLIP_NONE);
+	SDL_DestroyTexture(text);
+
+
+
+}

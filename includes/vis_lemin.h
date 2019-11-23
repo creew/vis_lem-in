@@ -185,4 +185,5 @@ void		get_handles_rect(t_rect *rect, int ww, int wh);
 void 		get_handle_rect(t_rect *rect, int index, int ww, int wh);
 void	draw_arc(SDL_Renderer * ren, SDL_Point c, int q, int r);
 void	draw_round_rect(SDL_Renderer *ren, SDL_Rect *rect, int r);
+void	draw_line(SDL_Renderer *ren, SDL_Point *start, SDL_Point *end, int th);
 #endif

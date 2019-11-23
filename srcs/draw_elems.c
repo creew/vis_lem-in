@@ -16,8 +16,8 @@ void			draw_links(t_vis *vis)
 {
 	size_t		size;
 	t_linkdata	*link;
-	t_point		start;
-	t_point		end;
+	SDL_Point	start;
+	SDL_Point	end;
 	float 		half_size;
 	t_rect		main;
 
@@ -33,7 +33,8 @@ void			draw_links(t_vis *vis)
 			end.x = (int)((float)link->right->x * vis->roomsize + half_size) + main.x;
 			end.y = (int)((float)link->right->y * vis->roomsize + half_size) + main.y;
 			SDL_SetRenderDrawColor(vis->ren, 0xFF, 0xFF, 0x00, 0x00);
-			SDL_RenderDrawLine(vis->ren, start.x, start.y, end.x, end.y);
+			//SDL_RenderDrawLine(vis->ren, start.x, start.y, end.x, end.y);
+			draw_line(vis->ren, &start, &end, 2);
 		}
 	}
 }
