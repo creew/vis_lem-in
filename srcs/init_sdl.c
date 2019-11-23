@@ -41,13 +41,12 @@ static int create_window(t_vis *vis)
 {
 	vis->window = SDL_CreateWindow("Hello, SDL 2!",SDL_WINDOWPOS_UNDEFINED,
 								   SDL_WINDOWPOS_UNDEFINED, vis->wwidth,
-								   vis->wheight, SDL_WINDOW_SHOWN);
+								   vis->wheight, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 	if (vis->window == NULL)
 	{
 		print_sdl_error("SDL_CreateWindow");
 		return 1;
 	}
-	SDL_SetWindowResizable(vis->window, SDL_TRUE);
 	SDL_SetWindowMinimumSize(vis->window, 600, 300);
 	return (0);
 }
@@ -56,7 +55,7 @@ int			sdl_init(t_vis *vis)
 {
 	int		flags;
 
-	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS) != 0)
 	{
 		print_sdl_error("Init");
 		return (1);

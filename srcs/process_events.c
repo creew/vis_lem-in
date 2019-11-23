@@ -181,7 +181,7 @@ int				process_event(t_vis *vis)
 			run = 0;
 		else if (e.type == SDL_WINDOWEVENT)
 		{
-			if (e.window.event == SDL_WINDOWEVENT_RESIZED)
+			if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
 				recalc_room_size(vis, e.window.data1, e.window.data2);
 		}
 		else if (e.type == SDL_USEREVENT)
