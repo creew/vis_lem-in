@@ -21,15 +21,31 @@ void		init_lem(t_lemin *lem)
 	ft_array_init(&lem->paths, 128);
 }
 
+int			init_all(t_vis *vis)
+{
+	if (sdl_init(vis) != 0)
+		return (1);
+	if (load_image_ants(vis) != 0)
+		return (1);
+	if (load_image_buttons(vis) != 0)
+		return (1);
+	if ((vis->font = load_font(12)) == NULL)
+		return (1);
+	if ((vis->info_font = load_font(20)) == NULL)
+		return (1);
+	vis->speed = 5;
+	vis->anim_tim = add_anim_timer(vis);
+	vis->moves_tim = add_moves_timer(vis);
+	vis->at_start = vis->lem.num_ants;
+	return (0);
+}
+
 int			main(int ac, char *av[])
 {
 	t_vis			vis;
 	t_result		res;
 
 	ft_bzero(&vis, sizeof(vis));
-	vis.window = NULL;
-	vis.tim_count = 0;
-	vis.speed = 5;
 	init_lem(&vis.lem);
 	if (ac != 2 || (vis.lem.fd = open(av[1], O_RDONLY)) == -1)
 		vis.lem.fd = 0;
@@ -45,19 +61,8 @@ int			main(int ac, char *av[])
 		return (vis_destroy(&vis));
 	ft_array_init(&vis.curlems, 64);
 	recalc_room_size(&vis, 1000, 500);
-	if (sdl_init(&vis) != 0)
+	if (init_all(&vis))
 		return (vis_destroy(&vis));
-	if (load_image_ants(&vis) != 0)
-		return (vis_destroy(&vis));
-	if (load_image_buttons(&vis) != 0)
-		return (vis_destroy(&vis));
-	if ((vis.font = load_font(12)) == NULL)
-		return (vis_destroy(&vis));
-	if ((vis.info_font = load_font(20)) == NULL)
-		return (vis_destroy(&vis));
-	vis.anim_tim = add_anim_timer(&vis);
-	vis.moves_tim = add_moves_timer(&vis);
-	vis.at_start = vis.lem.num_ants;
 	while (process_event(&vis))
 		draw_all(&vis);
 	vis_destroy(&vis);

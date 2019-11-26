@@ -35,7 +35,8 @@ ALL_C =	vis_lemin.c \
 		get_dims.c \
 		draw_arc.c \
 		moves.c \
-		draw_roomants.c
+		draw_roomants.c \
+		draw_fat_line.c
 
 SRCDIR = ./srcs
 OBJDIR = ./objs

@@ -32,7 +32,7 @@ add_executable(
         srcs/draw_all.c
         srcs/get_dims.c
         srcs/draw_arc.c
-        srcs/moves.c srcs/draw_roomants.c)
+        srcs/moves.c srcs/draw_roomants.c srcs/draw_fat_line.c)
 
 
 

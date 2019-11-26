@@ -19,7 +19,7 @@
 # include "libft.h"
 
 typedef unsigned char	t_uchar;
-typedef	int				t_result;
+typedef int				t_result;
 typedef t_ftarray		t_roomarr;
 typedef t_ftarray		t_linkarr;
 typedef t_ftarray		t_patharr;
@@ -58,25 +58,35 @@ typedef t_ftarray		t_lemsarr;
 # define PLAY_PAUSE_IMG	"./resources/play_pause.png"
 # define NES_FONT		"./resources/nes.ttf"
 
-typedef struct	s_img {
+typedef struct	s_fatline
+{
+	SDL_Texture		*texture;
+	SDL_Rect		src;
+	SDL_Rect		dst;
+	SDL_Point		center;
+	float			angle;
+}				t_fatline;
+
+typedef struct	s_img
+{
 	SDL_Texture		*texture;
 	int				w;
-	int 			h;
-	int 			nframes;
+	int				h;
+	int				nframes;
 }				t_img;
 
-typedef	SDL_Rect	t_rect;
+typedef SDL_Rect	t_rect;
 
 typedef struct	s_point
 {
 	int		x;
-	int 	y;
+	int		y;
 }				t_point;
 
 typedef struct	s_fpointxy
 {
 	float	x;
-	float 	y;
+	float	y;
 }				t_fpointxy;
 
 typedef struct	s_roomdata
@@ -84,12 +94,12 @@ typedef struct	s_roomdata
 	size_t		index;
 	int			x;
 	int			y;
-	int 		weigth;
+	int			weigth;
 	char		cmd;
-	char 		visited;
-	char 		meh_visit;
+	char		visited;
+	char		meh_visit;
 	int			ant_index;
-	int 		ant_count;
+	int			ant_count;
 	char		name[1];
 }				t_roomdata;
 
@@ -100,8 +110,8 @@ typedef struct	s_lemdata
 	t_uchar		shift;
 	t_uchar		move;
 	float		angle;
-	float 		x;
-	float 		y;
+	float		x;
+	float		y;
 }				t_lemdata;
 
 typedef struct	s_linkdata
@@ -110,7 +120,7 @@ typedef struct	s_linkdata
 	t_roomdata	*right;
 }				t_linkdata;
 
-typedef	struct	s_borders
+typedef struct	s_borders
 {
 	t_roomdata	*start;
 	t_roomdata	*end;
@@ -126,20 +136,21 @@ typedef struct	s_lemin
 	t_borders	se;
 }				t_lemin;
 
-typedef struct	s_vis {
+typedef struct	s_vis
+{
 	t_lemin			lem;
 	int				wwidth;
-	int 			wheight;
+	int				wheight;
 	float			roomsize;
 	t_lemdata		*lemarr;
 	t_lemsarr		curlems;
 
 	size_t			tim_count;
 	size_t			moves_count;
-	int 			paused;
+	int				paused;
 	int				speed;
-	int 			at_start;
-	int 			finished;
+	int				at_start;
+	int				finished;
 	t_img			antsimg;
 	t_img			buttonsimg;
 	SDL_Window		*window;
@@ -152,50 +163,53 @@ typedef struct	s_vis {
 	TTF_Font		*info_font;
 }				t_vis;
 
-void		print_sdl_error(const char *err);
+void			print_sdl_error(const char *err);
 
-int			sdl_init(t_vis *vis);
-int 		load_image_ants(t_vis *vis);
-int 		load_image_buttons(t_vis *vis);
-TTF_Font	*load_font(int pt_size);
-void		text_out(t_vis *vis, SDL_Point *point, char *txt, SDL_Color color);
-void		info_text_out(t_vis *vis, SDL_Point *point, char *txt,
-				SDL_Color color);
-int			read_file(t_vis *vis);
-int			count_numbers(char *str);
-char		*get_next_word(char *str, int *last);
-t_result	add_lem_link(t_roomarr *rooms, t_linkarr *links, char *str);
-t_result	add_lem_room(t_roomarr *rooms, char *str, int cmd);
-t_roomdata	*find_room_by_name(t_roomarr *rooms, const char *name);
-t_result	check_all(t_lemin *lem);
-void		recalc_room_size(t_vis *vis, int w, int h);
+int				sdl_init(t_vis *vis);
+int				load_image_ants(t_vis *vis);
+int				load_image_buttons(t_vis *vis);
+TTF_Font		*load_font(int pt_size);
+void			text_out(t_vis *vis, SDL_Point *point, char *txt,
+					SDL_Color color);
+void			info_text_out(t_vis *vis, SDL_Point *point, char *txt,
+					SDL_Color color);
+int				read_file(t_vis *vis);
+int				count_numbers(char *str);
+char			*get_next_word(char *str, int *last);
+t_result		add_lem_link(t_roomarr *rooms, t_linkarr *links, char *str);
+t_result		add_lem_room(t_roomarr *rooms, char *str, int cmd);
+t_roomdata		*find_room_by_name(t_roomarr *rooms, const char *name);
+t_result		check_all(t_lemin *lem);
+void			recalc_room_size(t_vis *vis, int w, int h);
 
-void		draw_links(t_vis *vis);
-void		draw_rooms(t_vis *vis);
-void		draw_ants(t_vis *vis);
-void 		draw_handles(t_vis *vis);
+void			draw_links(t_vis *vis);
+void			draw_rooms(t_vis *vis);
+void			draw_ants(t_vis *vis);
+void			draw_handles(t_vis *vis);
 
-SDL_TimerID	add_anim_timer(t_vis *vis);
-SDL_TimerID	add_moves_timer(void *param);
+SDL_TimerID		add_anim_timer(t_vis *vis);
+SDL_TimerID		add_moves_timer(void *param);
 
-int			vis_destroy(t_vis *vis);
+int				vis_destroy(t_vis *vis);
 
-void		draw_all(t_vis *vis);
+void			draw_all(t_vis *vis);
 
-int			process_event(t_vis *vis);
+int				process_event(t_vis *vis);
 
-void		get_main_rect(SDL_Rect *rect, int ww, int wh);
-void		get_handles_rect(SDL_Rect *rect, int ww, int wh);
-void 		get_handle_rect(SDL_Rect *rect, int index, int ww, int wh);
-void		get_info_rect(SDL_Rect *rect, int ww, int wh);
+void			get_main_rect(SDL_Rect *rect, int ww, int wh);
+void			get_handles_rect(SDL_Rect *rect, int ww, int wh);
+void			get_handle_rect(SDL_Rect *rect, int index, int ww, int wh);
+void			get_info_rect(SDL_Rect *rect, int ww, int wh);
 
-void		draw_arc(SDL_Renderer * ren, SDL_Point c, int q, int r);
-void		draw_round_rect(SDL_Renderer *ren, SDL_Rect *rect, int r);
-void		draw_line(SDL_Renderer *ren, SDL_Point *start, SDL_Point *end, int th);
-void		draw_filled_round_rect(SDL_Renderer *ren, SDL_Rect *rect, int r);
+void			draw_arc(SDL_Renderer *ren, SDL_Point c, int q, int r);
+void			draw_round_rect(SDL_Renderer *ren, SDL_Rect *rect, int r);
+void			draw_line(SDL_Renderer *ren, SDL_Point *start, SDL_Point *end,
+					int th);
+void			draw_filled_round_rect(SDL_Renderer *ren, SDL_Rect *rect,
+					int r);
 
-t_result	init_move(t_vis *vis);
-t_result	finish_move(t_vis *vis);
-t_result	do_move(t_vis *vis, size_t count);
-SDL_Color	get_color(int r, int g, int b, int a);
+t_result		init_move(t_vis *vis);
+t_result		finish_move(t_vis *vis);
+t_result		do_move(t_vis *vis, size_t count);
+SDL_Color		get_color(int r, int g, int b, int a);
 #endif
