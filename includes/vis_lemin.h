@@ -185,7 +185,7 @@ void			draw_handles(t_vis *vis);
 SDL_TimerID		add_anim_timer(t_vis *vis);
 SDL_TimerID		add_moves_timer(void *param);
 
-int				vis_destroy(t_vis *vis);
+int				vis_destroy(t_vis *vis, int is_err);
 
 void			draw_all(t_vis *vis);
 

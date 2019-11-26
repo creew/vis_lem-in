@@ -55,16 +55,16 @@ int			main(int ac, char *av[])
 		if (check_all(&vis.lem) == RET_OK)
 			vis.lemarr = ft_calloc(vis.lem.num_ants, sizeof(t_lemdata));
 		else
-			return (vis_destroy(&vis));
+			return (vis_destroy(&vis, 1));
 	}
 	else
-		return (vis_destroy(&vis));
+		return (vis_destroy(&vis, 1));
 	ft_array_init(&vis.curlems, 64);
 	recalc_room_size(&vis, 1000, 500);
 	if (init_all(&vis))
-		return (vis_destroy(&vis));
+		return (vis_destroy(&vis, 1));
 	while (process_event(&vis))
 		draw_all(&vis);
-	vis_destroy(&vis);
+	vis_destroy(&vis, 0);
 	return (0);
 }

@@ -35,8 +35,10 @@ static void		sdl_destroy(t_vis *vis)
 	TTF_Quit();
 }
 
-int				vis_destroy(t_vis *vis)
+int				vis_destroy(t_vis *vis, int is_err)
 {
+	if (is_err)
+		ft_putendl_fd("Error", 2);
 	sdl_destroy(vis);
 	return (1);
 }
