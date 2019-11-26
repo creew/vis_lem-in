@@ -82,7 +82,7 @@ static t_result	add_lemlink_list(t_linkarr *larr,
 ** -----
 */
 
-t_result		add_lem_link(t_lemin *lem, char *str)
+t_result		add_lem_link(t_roomarr *rooms, t_linkarr *links, char *str)
 {
 	char		*r1;
 	char		*r2;
@@ -99,10 +99,10 @@ t_result		add_lem_link(t_lemin *lem, char *str)
 			return (ERR_WRONG_LINK);
 	}
 	*r2++ = '\0';
-	if (!(room1 = find_room_by_name(&lem->rooms, ft_trim_spaces(r1))) ||
-		!(room2 = find_room_by_name(&lem->rooms, ft_trim_spaces(r2))))
+	if (!(room1 = find_room_by_name(rooms, ft_trim_spaces(r1))) ||
+		!(room2 = find_room_by_name(rooms, ft_trim_spaces(r2))))
 		return (ERR_WRONG_LINK_ROOM);
 	if (ft_strequ(r1, r2))
 		return (ERR_WRONG_LINK_TO_LINK);
-	return (add_lemlink_list(&lem->links, room1, room2));
+	return (add_lemlink_list(links, room1, room2));
 }

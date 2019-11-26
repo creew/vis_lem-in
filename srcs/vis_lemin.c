@@ -21,7 +21,7 @@ void		init_lem(t_lemin *lem)
 	ft_array_init(&lem->paths, 128);
 }
 
-int		main(int ac, char *av[])
+int			main(int ac, char *av[])
 {
 	t_vis			vis;
 	t_result		res;
@@ -29,6 +29,7 @@ int		main(int ac, char *av[])
 	ft_bzero(&vis, sizeof(vis));
 	vis.window = NULL;
 	vis.tim_count = 0;
+	vis.speed = 5;
 	init_lem(&vis.lem);
 	if (ac != 2 || (vis.lem.fd = open(av[1], O_RDONLY)) == -1)
 		vis.lem.fd = 0;
@@ -50,10 +51,13 @@ int		main(int ac, char *av[])
 		return (vis_destroy(&vis));
 	if (load_image_buttons(&vis) != 0)
 		return (vis_destroy(&vis));
-	if (load_font(&vis) != 0)
+	if ((vis.font = load_font(12)) == NULL)
 		return (vis_destroy(&vis));
-	vis.anim_tim = add_anim_timer(&vis.tim_count);
+	if ((vis.info_font = load_font(20)) == NULL)
+		return (vis_destroy(&vis));
+	vis.anim_tim = add_anim_timer(&vis);
 	vis.moves_tim = add_moves_timer(&vis);
+	vis.at_start = vis.lem.num_ants;
 	while (process_event(&vis))
 		draw_all(&vis);
 	vis_destroy(&vis);

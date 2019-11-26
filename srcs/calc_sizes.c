@@ -18,7 +18,7 @@ static void		get_xy_size(t_lemin *lem, t_point *wh, t_point *min_xy)
 	size_t		size;
 	t_roomdata	*room;
 
-	ft_bzero((void *) &max_xy, sizeof(max_xy));
+	ft_bzero((void *)&max_xy, sizeof(max_xy));
 	if ((size = ft_array_size(&lem->rooms)))
 		if (ft_array_get(&lem->rooms, --size, (void **)&room) == 0)
 		{
@@ -64,7 +64,6 @@ void			recalc_room_size(t_vis *vis, int w, int h)
 	t_point		wh;
 	t_point		min;
 	SDL_Rect	main;
-
 
 	vis->wwidth = w;
 	vis->wheight = h;

@@ -12,7 +12,7 @@
 
 #include "vis_lemin.h"
 
-int 	load_image_ants(t_vis *vis)
+int		load_image_ants(t_vis *vis)
 {
 	SDL_Surface		*temp_surf;
 
@@ -36,12 +36,13 @@ int 	load_image_ants(t_vis *vis)
 	return (0);
 }
 
-int 	load_image_buttons(t_vis *vis)
+int		load_image_buttons(t_vis *vis)
 {
 	SDL_Surface		*temp_surf;
 
 	temp_surf = IMG_Load(PLAY_PAUSE_IMG);
-	if (temp_surf == NULL) {
+	if (temp_surf == NULL)
+	{
 		print_sdl_error(IMG_GetError());
 		return (1);
 	}
@@ -58,4 +59,3 @@ int 	load_image_buttons(t_vis *vis)
 	SDL_FreeSurface(temp_surf);
 	return (0);
 }
-

@@ -44,6 +44,7 @@ OBJS = $(addprefix $(OBJDIR)/, $(ALL_OBJ))
 
 INC_DIR =	./libft/includes \
 			./includes \
+			./ft_printf/includes \
 			./include
 #			/usr/include \
 
@@ -51,6 +52,7 @@ INC_DIR =	./libft/includes \
 INC_FLAG = $(addprefix -I,$(INC_DIR))
 
 LIB_DIR =	./libft \
+			./ft_printf \
 			./lib
 #			/usr/lib/x86_64-linux-gnu \
 
@@ -60,34 +62,44 @@ LIBS = 		ft \
 			SDL2 \
 			SDL2_image \
 			SDL2_ttf \
-			m
+			m \
+			ftprintf
 
 LIBS_FLAG = $(addprefix -l,$(LIBS))
 
 HEADERS = ./includes/vis_lemin.h
 
-all: lib $(NAME)
+COMP_LIB = make -C libft
+COMP_PRINTF = make -C ft_printf
+
+
+all: $(NAME)
 
 lib:
-	make -C ./libft
+	$(COMP_LIB)
 
-$(NAME): $(OBJS)
+ft_printf:
+	$(COMP_PRINTF)
+
+$(NAME): $(OBJS) | lib ft_printf
 	$(CC) $(CC_FLAGS) $^ $(LIB_DIR_FLAG) $(LIBS_FLAG) -o $@
 
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c $(HEADERS) | $(OBJDIR)
+$(OBJDIR)/%.o: $(SRCDIR)/%.c $(HEADERS) ./libft/libft.a ./ft_printf/libftprintf.a | $(OBJDIR)
 	$(CC) $(CC_FLAGS) $(INC_FLAG) -c $< -o $@
 
 clean:
-	make clean -C ./libft
+	$(COMP_LIB) clean
+	$(COMP_PRINTF) clean
 	rm -f $(OBJS)
 
 fclean: clean
 	rm -f ./libft/libft.a
+	rm -f ./ft_printf/libftprintf.a
 	rm -f $(NAME)
 
 re: fclean all
 
-.PHONY: lib clean fclean all re
+.PHONY: lib ft_printf clean fclean all re

@@ -14,16 +14,17 @@
 
 static Uint32	anim_tim_callback(Uint32 interval, void *param)
 {
-	size_t	*count;
+	t_vis	*vis;
 
-	count = (size_t *)param;
-	*count = *count + 1;
+	vis = (t_vis *)param;
+	if (!vis->paused)
+		vis->tim_count++;
 	return (interval);
 }
 
-SDL_TimerID		add_anim_timer(void *param)
+SDL_TimerID		add_anim_timer(t_vis *vis)
 {
-	return (SDL_AddTimer(20, anim_tim_callback, param));
+	return (SDL_AddTimer(20, anim_tim_callback, vis));
 }
 
 Uint32			moves_tim_callback(Uint32 interval, void *param)
@@ -33,24 +34,23 @@ Uint32			moves_tim_callback(Uint32 interval, void *param)
 	SDL_UserEvent	userevent;
 
 	vis = (t_vis *)param;
+	userevent.code = vis->moves_count == 0 ? 0 : 1;
+	userevent.type = SDL_USEREVENT;
+	userevent.data1 = NULL;
+	userevent.data2 = (void *)vis->moves_count;
+	event.type = SDL_USEREVENT;
+	event.user = userevent;
+	SDL_PushEvent(&event);
 	if (!vis->paused)
+		vis->moves_count += vis->speed;
+	if (vis->moves_count >= MOVE_STEPS)
 	{
-		userevent.code = vis->moves_count == 0 ? 0 : 1;
-		userevent.type = SDL_USEREVENT;
-		userevent.data1 = NULL;
+		vis->moves_count = 0;
+		userevent.code = 2;
 		userevent.data2 = (void *)vis->moves_count;
 		event.type = SDL_USEREVENT;
 		event.user = userevent;
 		SDL_PushEvent(&event);
-		if (++vis->moves_count == MOVE_STEPS)
-		{
-			vis->moves_count = 0;
-			userevent.code = 2;
-			userevent.data2 = (void *)vis->moves_count;
-			event.type = SDL_USEREVENT;
-			event.user = userevent;
-			SDL_PushEvent(&event);
-		}
 	}
 	return (interval);
 }

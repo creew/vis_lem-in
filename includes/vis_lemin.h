@@ -52,7 +52,7 @@ typedef t_ftarray		t_lemsarr;
 # define LEM_CMD_END			(2)
 # define LEM_CMD_UNKNOWN		(3)
 
-# define MOVE_STEPS				(1000)
+# define MOVE_STEPS				(5000)
 
 # define ANTS_IMG		"./resources/all_ants.png"
 # define PLAY_PAUSE_IMG	"./resources/play_pause.png"
@@ -73,11 +73,11 @@ typedef struct	s_point
 	int 	y;
 }				t_point;
 
-typedef struct	s_fpoint
+typedef struct	s_fpointxy
 {
 	float	x;
 	float 	y;
-}				t_fpoint;
+}				t_fpointxy;
 
 typedef struct	s_roomdata
 {
@@ -137,7 +137,9 @@ typedef struct	s_vis {
 	size_t			tim_count;
 	size_t			moves_count;
 	int 			paused;
-	int 			stopped;
+	int				speed;
+	int 			at_start;
+	int 			finished;
 	t_img			antsimg;
 	t_img			buttonsimg;
 	SDL_Window		*window;
@@ -147,6 +149,7 @@ typedef struct	s_vis {
 	SDL_TimerID		anim_tim;
 	SDL_TimerID		moves_tim;
 	TTF_Font		*font;
+	TTF_Font		*info_font;
 }				t_vis;
 
 void		print_sdl_error(const char *err);
@@ -154,14 +157,15 @@ void		print_sdl_error(const char *err);
 int			sdl_init(t_vis *vis);
 int 		load_image_ants(t_vis *vis);
 int 		load_image_buttons(t_vis *vis);
-int			load_font(t_vis *vis);
+TTF_Font	*load_font(int pt_size);
 void		text_out(t_vis *vis, SDL_Point *point, char *txt, SDL_Color color);
-
+void		info_text_out(t_vis *vis, SDL_Point *point, char *txt,
+				SDL_Color color);
 int			read_file(t_vis *vis);
 int			count_numbers(char *str);
 char		*get_next_word(char *str, int *last);
-t_result	add_lem_link(t_lemin *lem, char *str);
-t_result	add_lem_room(t_lemin *lem, char *str, int cmd);
+t_result	add_lem_link(t_roomarr *rooms, t_linkarr *links, char *str);
+t_result	add_lem_room(t_roomarr *rooms, char *str, int cmd);
 t_roomdata	*find_room_by_name(t_roomarr *rooms, const char *name);
 t_result	check_all(t_lemin *lem);
 void		recalc_room_size(t_vis *vis, int w, int h);
@@ -171,7 +175,7 @@ void		draw_rooms(t_vis *vis);
 void		draw_ants(t_vis *vis);
 void 		draw_handles(t_vis *vis);
 
-SDL_TimerID	add_anim_timer(void *param);
+SDL_TimerID	add_anim_timer(t_vis *vis);
 SDL_TimerID	add_moves_timer(void *param);
 
 int			vis_destroy(t_vis *vis);
@@ -180,9 +184,11 @@ void		draw_all(t_vis *vis);
 
 int			process_event(t_vis *vis);
 
-void		get_main_rect(t_rect *rect, int ww, int wh);
-void		get_handles_rect(t_rect *rect, int ww, int wh);
-void 		get_handle_rect(t_rect *rect, int index, int ww, int wh);
+void		get_main_rect(SDL_Rect *rect, int ww, int wh);
+void		get_handles_rect(SDL_Rect *rect, int ww, int wh);
+void 		get_handle_rect(SDL_Rect *rect, int index, int ww, int wh);
+void		get_info_rect(SDL_Rect *rect, int ww, int wh);
+
 void		draw_arc(SDL_Renderer * ren, SDL_Point c, int q, int r);
 void		draw_round_rect(SDL_Renderer *ren, SDL_Rect *rect, int r);
 void		draw_line(SDL_Renderer *ren, SDL_Point *start, SDL_Point *end, int th);

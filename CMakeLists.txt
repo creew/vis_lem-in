@@ -8,6 +8,7 @@ include_directories(
         ./include
         ./includes
         ./libft/includes
+        ./ft_printf/includes
 )
 
 

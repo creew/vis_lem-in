@@ -11,29 +11,37 @@
 /* ************************************************************************** */
 
 #include "vis_lemin.h"
+#include "ft_printf.h"
 
-void		draw_all(t_vis *vis)
+void		draw_info(t_vis *vis)
 {
-	SDL_Color		color;
-	SDL_Point		point;
+	char 		str[128];
+	SDL_Rect	info;
+	SDL_Point	point;
+	SDL_Color	color;
 
-	color.a = 255;
+	get_info_rect(&info, vis->wwidth, vis->wheight);
+	point.x = info.x;
+	point.y = info.y;
+	ft_sprintf(str, "at start: %-3d, at finish: %-3d, speed: %-3d",
+		vis->at_start, vis->finished, vis->speed);
 	color.r = 0;
 	color.g = 0;
 	color.b = 0;
+	color.a = 255;
+	info_text_out(vis, &point, str, color);
+}
 
-	point.x = 10;
-	point.y = 10;
-
+void		draw_all(t_vis *vis)
+{
 	SDL_SetRenderDrawColor(vis->ren, 0x00, 0xFF, 0x00, 0xFF);
 	SDL_RenderClear(vis->ren);
-	//text_out(vis, &point,"Привет муравьям!", color);
-
 	SDL_SetRenderDrawColor(vis->ren, 0x00, 0x00, 0x00, 0x00);
+
 	draw_links(vis);
 	draw_rooms(vis);
 	draw_ants(vis);
 	draw_handles(vis);
-
+	draw_info(vis);
 	SDL_RenderPresent(vis->ren);
 }

@@ -12,15 +12,13 @@
 
 #include "vis_lemin.h"
 
-int		load_font(t_vis *vis)
+TTF_Font	*load_font(int pt_size)
 {
-	vis->font = TTF_OpenFont(NES_FONT, 12);
-	if (vis->font == NULL)
-	{
+	TTF_Font	*font;
+	font = TTF_OpenFont(NES_FONT, pt_size);
+	if (font == NULL)
 		print_sdl_error(TTF_GetError());
-		return (1);
-	}
-	return (0);
+	return (font);
 }
 
 void	text_out(t_vis *vis, SDL_Point *point, char *txt, SDL_Color color)
@@ -30,6 +28,23 @@ void	text_out(t_vis *vis, SDL_Point *point, char *txt, SDL_Color color)
 	SDL_Rect		rect;
 
 	surface = TTF_RenderUTF8_Solid(vis->font, txt, color);
+	msg = SDL_CreateTextureFromSurface(vis->ren, surface);
+	rect.x = point->x;
+	rect.y = point->y;
+	rect.w = surface->w;
+	rect.h = surface->h;
+	SDL_RenderCopy(vis->ren, msg, NULL, &rect);
+	SDL_FreeSurface(surface);
+	SDL_DestroyTexture(msg);
+}
+
+void	info_text_out(t_vis *vis, SDL_Point *point, char *txt, SDL_Color color)
+{
+	SDL_Surface		*surface;
+	SDL_Texture		*msg;
+	SDL_Rect		rect;
+
+	surface = TTF_RenderUTF8_Solid(vis->info_font, txt, color);
 	msg = SDL_CreateTextureFromSurface(vis->ren, surface);
 	rect.x = point->x;
 	rect.y = point->y;

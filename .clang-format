@@ -63,7 +63,7 @@ PenaltyExcessCharacter: 0
 
 SortIncludes: true #Сортировка include
 
-SpaceAfterCStyleCast: true #Пробел в стиле (int) i;
+SpaceAfterCStyleCast: false #Пробел в стиле (int) i;
 
 SpaceBeforeAssignmentOperators: true #Пробел после опреатора присваивания
 

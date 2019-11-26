@@ -27,7 +27,7 @@ static  t_result	process_move(t_vis *vis, char *str)
 	{
 		if (*s++ != 'L')
 			return (ERR_NOT_MOVE);
-		index = (int) ft_strtol(s, &end, 10);
+		index = (int)ft_strtol(s, &end, 10);
 		if (index < 1 || index > vis->lem.num_ants)
 			return (ERR_NOT_MOVE);
 		if (*end++ != '-')
@@ -38,6 +38,7 @@ static  t_result	process_move(t_vis *vis, char *str)
 		lemdata = &vis->lemarr[index - 1];
 		if (lemdata->move == 0)
 		{
+			vis->at_start--;
 			lemdata->src_room = vis->lem.se.start;
 			lemdata->shift = rand() % 255;
 		}
@@ -74,23 +75,20 @@ static t_result	init_move(t_vis *vis)
 
 static t_result	do_move(t_vis *vis, size_t count)
 {
-	size_t		size;
+	size_t		index;
 	t_lemdata	*ldata;
-	t_fpoint	src;
-	t_fpoint	dst;
+	t_fpointxy	src;
+	t_fpointxy	dst;
 
-	size = ft_array_size(&vis->curlems);
-	while (size--)
+	index = -1;
+	while (ft_array_get(&vis->curlems, ++index, (void **)&ldata) == 0)
 	{
-		if (ft_array_get(&vis->curlems, size, (void **)&ldata) == 0)
-		{
-			dst.x = (float)ldata->dst_room->x * vis->roomsize;
-			dst.y = (float)ldata->dst_room->y * vis->roomsize;
-			src.x = (float)ldata->src_room->x * vis->roomsize;
-			src.y = (float)ldata->src_room->y * vis->roomsize;
-			ldata->x = src.x + (dst.x - src.x) * count / MOVE_STEPS;
-			ldata->y = src.y + (dst.y - src.y) * count / MOVE_STEPS;
-		}
+		dst.x = (float)ldata->dst_room->x * vis->roomsize;
+		dst.y = (float)ldata->dst_room->y * vis->roomsize;
+		src.x = (float)ldata->src_room->x * vis->roomsize;
+		src.y = (float)ldata->src_room->y * vis->roomsize;
+		ldata->x = src.x + (dst.x - src.x) * count / MOVE_STEPS;
+		ldata->y = src.y + (dst.y - src.y) * count / MOVE_STEPS;
 	}
 	return (RET_OK);
 }
@@ -98,16 +96,20 @@ static t_result	do_move(t_vis *vis, size_t count)
 static void		set_move(void *data, void *udata)
 {
 	t_lemdata	*ldata;
+	t_vis		*vis;
 
-	(void)udata;
+	vis = (t_vis *)udata;
 	ldata = (t_lemdata *)data;
 	if (ldata->dst_room->cmd == LEM_CMD_END)
+	{
 		ldata->move = 2;
+		vis->finished++;
+	}
 }
 
 static t_result	finish_move(t_vis *vis)
 {
-	ft_array_foreach(&vis->curlems, set_move, NULL);
+	ft_array_foreach(&vis->curlems, set_move, vis);
 	vis->curlems.num_elems = 0;
 	return (RET_OK);
 }
@@ -140,30 +142,17 @@ void			handle_mouse(SDL_Event *e, SDL_Window *window, t_vis *vis)
 		{
 			if (index == 0)
 			{
-
-
+				if (vis->speed > 1)
+					vis->speed--;
 			}
 			else if (index == 1)
 			{
-				if (vis->paused)
-					vis->paused = 0;
-				if (vis->stopped)
-				{
-
-				}
+                vis->paused = !vis->paused;
 			}
 			else if (index == 2)
 			{
-				SDL_RemoveTimer(vis->moves_tim);
-				vis->moves_count = 0;
-			}
-			else if (index == 3)
-			{
-				vis->paused = !vis->paused;
-			}
-			else if (index == 4)
-			{
-
+                if (vis->speed < 9)
+                    vis->speed++;
 			}
 		}
 	}
@@ -194,10 +183,7 @@ int				process_event(t_vis *vis)
 				finish_move(vis);
 		}
 		else if (e.type == SDL_MOUSEBUTTONUP)
-		{
 			handle_mouse(&e, vis->window, vis);
-		}
-
 	}
 	return (run);
 }

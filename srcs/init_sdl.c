@@ -24,7 +24,7 @@ static int	create_surface(t_vis *vis)
 	return (0);
 }
 
-static int create_renderer(t_vis *vis)
+static int	create_renderer(t_vis *vis)
 {
 	vis->ren = SDL_CreateRenderer(vis->window, -1,
 		SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
@@ -37,17 +37,17 @@ static int create_renderer(t_vis *vis)
 	return (0);
 }
 
-static int create_window(t_vis *vis)
+static int	create_window(t_vis *vis)
 {
-	vis->window = SDL_CreateWindow("Hello, SDL 2!",SDL_WINDOWPOS_UNDEFINED,
-								   SDL_WINDOWPOS_UNDEFINED, vis->wwidth,
-								   vis->wheight, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+	vis->window = SDL_CreateWindow("Hello, SDL 2!", SDL_WINDOWPOS_UNDEFINED,
+		SDL_WINDOWPOS_UNDEFINED, vis->wwidth,
+		vis->wheight, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 	if (vis->window == NULL)
 	{
 		print_sdl_error("SDL_CreateWindow");
-		return 1;
+		return (1);
 	}
-	SDL_SetWindowMinimumSize(vis->window, 600, 300);
+	SDL_SetWindowMinimumSize(vis->window, 1000, 300);
 	return (0);
 }
 

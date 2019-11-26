@@ -26,10 +26,10 @@ static void	draw_quad(SDL_Renderer *ren, SDL_Point c, SDL_Point add, int q)
 		SDL_RenderDrawPoint(ren, c.x - add.x, c.y - add.y);
 }
 
-void	draw_arc(SDL_Renderer * ren, SDL_Point c, int q, int r)
+void		draw_arc(SDL_Renderer *ren, SDL_Point c, int q, int r)
 {
 	SDL_Point	add;
-	int 		delta;
+	int			delta;
 	int			error;
 
 	add.x = 0;
@@ -48,16 +48,21 @@ void	draw_arc(SDL_Renderer * ren, SDL_Point c, int q, int r)
 	}
 }
 
-void	draw_round_rect(SDL_Renderer *ren, SDL_Rect *rect, int r)
+void		draw_round_rect(SDL_Renderer *ren, SDL_Rect *rect, int r)
 {
 	SDL_Point p;
-	SDL_RenderDrawLine(ren, rect->x + r, rect->y, rect->x + rect->w - r, rect->y);
-	SDL_RenderDrawLine(ren, rect->x + r, rect->y + rect->h, rect->x + rect->w - r, rect->y + rect->h);
-	SDL_RenderDrawLine(ren, rect->x, rect->y + r, rect->x, rect->y + rect->h - r);
-	SDL_RenderDrawLine(ren, rect->x + rect->w, rect->y + r, rect->x + rect->w, rect->y + rect->h - r);
+
+	SDL_RenderDrawLine(ren, rect->x + r, rect->y,
+		rect->x + rect->w - r, rect->y);
+	SDL_RenderDrawLine(ren, rect->x + r, rect->y + rect->h,
+		rect->x + rect->w - r, rect->y + rect->h);
+	SDL_RenderDrawLine(ren, rect->x, rect->y + r, rect->x,
+		rect->y + rect->h - r);
+	SDL_RenderDrawLine(ren, rect->x + rect->w, rect->y + r,
+		rect->x + rect->w, rect->y + rect->h - r);
 	p.x = rect->x + rect->w - r - 1;
 	p.y = rect->y + r;
-  	draw_arc(ren, p, 1, r);
+	draw_arc(ren, p, 1, r);
 	p.x = rect->x + rect->w - r - 1;
 	p.y = rect->y + rect->h - r;
 	draw_arc(ren, p, 2, r);
@@ -69,44 +74,43 @@ void	draw_round_rect(SDL_Renderer *ren, SDL_Rect *rect, int r)
 	draw_arc(ren, p, 4, r);
 }
 
-void	draw_filled_round_rect(SDL_Renderer *ren, SDL_Rect *rect, int r)
+void		draw_filled_round_rect(SDL_Renderer *ren, SDL_Rect *rect, int r)
 {
 	int		y0;
 	int		x;
-	int 	x0;
+	int		x0;
 	int		w;
 
 	y0 = -1;
 	while (++y0 < rect->h - 2 * r)
 	{
 		SDL_RenderDrawLine(ren, rect->x, rect->y + r + y0, rect->x + rect->w,
-				rect->y + r + y0);
+			rect->y + r + y0);
 	}
 	y0 = -1;
 	while (++y0 < r)
 	{
 		x = (int)(sqrt(r * r - y0 * y0) + 0.5);
-
 		w = rect->w - r * 2 + x * 2;
 		x0 = (rect->w - w) / 2;
-		SDL_RenderDrawLine(ren, rect->x + x0 + 1 , rect->y + r - y0,
-						   rect->x + x0 + w, rect->y + r - y0);
-		SDL_RenderDrawLine(ren, rect->x + x0 + 1 , rect->y + rect->h - r + y0,
-						   rect->x + x0 + w, rect->y + rect->h - r + y0);
+		SDL_RenderDrawLine(ren, rect->x + x0 + 1, rect->y + r - y0,
+			rect->x + x0 + w, rect->y + r - y0);
+		SDL_RenderDrawLine(ren, rect->x + x0 + 1, rect->y + rect->h - r + y0,
+			rect->x + x0 + w, rect->y + rect->h - r + y0);
 	}
 }
 
-void	draw_line(SDL_Renderer *ren, SDL_Point *start, SDL_Point *end, int th)
+void		draw_line(SDL_Renderer *ren, SDL_Point *start,
+	SDL_Point *end, int th)
 {
 	SDL_Texture *text;
 	int			len;
 	Uint32		*pixels;
-	int 		pitch;
-	int 		tw, thi;
-	float 		angle;
-
-	int 		w, h;
-	Uint32 		format;
+	int			pitch;
+	int			tw, thi;
+	float		angle;
+	int			w, h;
+	Uint32		format;
 	SDL_Rect	in, out;
 	SDL_Point	center;
 
@@ -114,11 +118,9 @@ void	draw_line(SDL_Renderer *ren, SDL_Point *start, SDL_Point *end, int th)
 	len = (int)sqrtf((end->x - start->x) * (end->x - start->x) +
 					 (end->y - start->y) * (end->y - start->y));
 	text = SDL_CreateTexture(ren,SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, len, th);
-
 	SDL_QueryTexture(text, &format, NULL, &w, &h);
 	if (SDL_LockTexture(text, NULL, (void**)&pixels, &pitch))
 		print_sdl_error(SDL_GetError());
-
 	SDL_PixelFormat *pixelFormat = SDL_AllocFormat(SDL_PIXELFORMAT_RGBA8888);
 	Uint32 color = SDL_MapRGB(pixelFormat, 255, 0, 0);
 	thi = th;
@@ -139,7 +141,6 @@ void	draw_line(SDL_Renderer *ren, SDL_Point *start, SDL_Point *end, int th)
 	out.y = start->y;
 	out.w = len;
 	out.h = th;
-
 	center.x = in.x;
 	center.y = in.h / 2;
 	SDL_RenderCopyEx(ren, text, &in, &out, angle, &center , SDL_FLIP_NONE);

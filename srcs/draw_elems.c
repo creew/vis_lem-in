@@ -49,7 +49,6 @@ void			draw_rooms(t_vis *vis)
 	t_rect		main;
 
 	get_main_rect(&main, vis->wwidth, vis->wheight);
-
 	size = ft_array_size(&vis->lem.rooms);
 	while (size--)
 	{
@@ -63,23 +62,15 @@ void			draw_rooms(t_vis *vis)
 			draw_filled_round_rect(vis->ren, &roomrect, ft_min(roomrect.w, roomrect.h) / 5);
 			point.x = roomrect.x + 5;
 			point.y = roomrect.y + 5;
+			color.a = 255;
+			color.r = 0;
+			color.g = 0;
+			color.b = 0;
 			if (room->cmd == LEM_CMD_START || room->cmd == LEM_CMD_END)
-			{
-				color.a = 255;
-				color.r = 0;
-				color.g = 0;
-				color.b = 0;
 				text_out(vis, &point, room->cmd == LEM_CMD_START ?
 					"start":"end", color);
-			}
 			else
-			{
-				color.a = 255;
-				color.r = 0;
-				color.g = 0;
-				color.b = 0;
 				text_out(vis, &point, room->name, color);
-			}
 		}
 	}
 }
@@ -97,8 +88,6 @@ static void		draw_ant(t_vis *vis, t_lemdata *ldata)
 	srcrect.y = 0;
 	srcrect.w = (vis->antsimg.w / vis->antsimg.nframes);
 	srcrect.h = vis->antsimg.h;
-
-
 	dim = vis->roomsize * 0.95f;
 	roomrect.w = (int)(dim);
 	roomrect.h = (int)(dim);
@@ -110,44 +99,35 @@ static void		draw_ant(t_vis *vis, t_lemdata *ldata)
 
 void	draw_ants(t_vis *vis)
 {
-	size_t		size;
+	size_t		index;
 	t_lemdata	*ldata;
 
-	size = ft_array_size(&vis->curlems);
-	while (size--)
-	{
-		if (ft_array_get(&vis->curlems, size, (void **)&ldata) == 0)
-		{
-			draw_ant(vis, ldata);
-		}
-	}
+	index = -1;
+	while (ft_array_get(&vis->curlems, ++index, (void **)&ldata) == 0)
+		draw_ant(vis, ldata);
 }
 
-void 	draw_handles(t_vis *vis)
+static void	draw_handle(t_vis *vis, int src_index, int dst_index)
 {
 	SDL_Rect 	srcrect;
 	SDL_Rect 	dstrect;
+
+	srcrect.x = 0 + (src_index) * (vis->buttonsimg.w / vis->buttonsimg.nframes);
+	srcrect.y = 0;
+	srcrect.w = (vis->buttonsimg.w / vis->buttonsimg.nframes);
+	srcrect.h = vis->buttonsimg.h;
+	get_handle_rect(&dstrect, dst_index, vis->wwidth, vis->wheight);
+	SDL_RenderCopy(vis->ren, vis->buttonsimg.texture, &srcrect, &dstrect);
+}
+void 		draw_handles(t_vis *vis)
+{
+
 	SDL_Rect	handles;
-	SDL_Rect	frame;
 
-	int 		index;
-
-	index = -1;
 	get_handles_rect(&handles, vis->wwidth, vis->wheight);
-	frame.x = handles.x + 2;
-	frame.y = handles.y + 2;
-	frame.w = handles.w - 4;
-	frame.h = handles.h - 4;
 	SDL_SetRenderDrawColor(vis->ren, 0xFF, 0xFF, 0x00, 0xFF);
-	draw_filled_round_rect(vis->ren, &frame, 10);
-	while (++index < vis->buttonsimg.nframes)
-	{
-		srcrect.x = 0 + (index) * (vis->buttonsimg.w / vis->buttonsimg.nframes);
-		srcrect.y = 0;
-		srcrect.w = (vis->buttonsimg.w / vis->buttonsimg.nframes);
-		srcrect.h = vis->buttonsimg.h;
-
-		get_handle_rect(&dstrect, index, vis->wwidth, vis->wheight);
-		SDL_RenderCopy(vis->ren, vis->buttonsimg.texture, &srcrect, &dstrect);
-	}
+	draw_filled_round_rect(vis->ren, &handles, 10);
+	draw_handle(vis, 0, 0);
+	draw_handle(vis, vis->paused ? 1 : 3, 1);
+	draw_handle(vis, 4, 2);
 }

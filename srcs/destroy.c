@@ -27,7 +27,9 @@ static void		sdl_destroy(t_vis *vis)
 	SDL_DestroyTexture(vis->font_text);
 	vis->font_text = NULL;
 	TTF_CloseFont(vis->font);
-	vis->font = 0;
+	vis->font = NULL;
+	TTF_CloseFont(vis->info_font);
+	vis->info_font = NULL;
 	SDL_Quit();
 	IMG_Quit();
 	TTF_Quit();

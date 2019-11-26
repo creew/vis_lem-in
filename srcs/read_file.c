@@ -27,12 +27,12 @@ static void		get_lem_cmd(char *str, int *cmd)
 }
 
 static t_result	parse_not_comment_str(t_lemin *lem, char *s,
-										 int *is_rooms, int cmd)
+	int *is_rooms, int cmd)
 {
 	if (*is_rooms && count_numbers(s) == 3)
-		return (add_lem_room(lem, s, cmd));
+		return (add_lem_room(&lem->rooms, s, cmd));
 	*is_rooms = 0;
-	return (add_lem_link(lem, s));
+	return (add_lem_link(&lem->rooms, &lem->links, s));
 }
 
 static t_result	read_rooms_and_links(int fd, t_lemin *lem)
@@ -64,7 +64,7 @@ static t_result	read_rooms_and_links(int fd, t_lemin *lem)
 	return (RET_OK);
 }
 
-int		read_file(t_vis *vis)
+int				read_file(t_vis *vis)
 {
 	char	*s;
 	int		res;
@@ -79,8 +79,11 @@ int		read_file(t_vis *vis)
 			break ;
 		ft_strdel(&s);
 	}
-	if (ft_safe_atoi(s, &lem->num_ants) != FT_ATOI_OK || lem->num_ants < 1)
-		return (ERR_WRONG_ANTS_NUMBER);
+	if (res == 0)
+		return (ERR_READ_ANTS_NUMBER);
+	res = ft_safe_atoi(s, &lem->num_ants);
 	ft_strdel(&s);
+	if (res != FT_ATOI_OK || lem->num_ants < 1)
+		return (ERR_WRONG_ANTS_NUMBER);
 	return (read_rooms_and_links(vis->lem.fd, lem));
 }

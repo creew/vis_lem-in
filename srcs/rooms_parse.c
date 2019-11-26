@@ -78,7 +78,7 @@ static t_result	add_roomdata(t_roomarr *arr, const char *name,
 	return (RET_OK);
 }
 
-t_result		add_lem_room(t_lemin *lem, char *str, int cmd)
+t_result		add_lem_room(t_roomarr *rooms, char *str, int cmd)
 {
 	int		last;
 	int		xy[2];
@@ -91,7 +91,7 @@ t_result		add_lem_room(t_lemin *lem, char *str, int cmd)
 		return (ERR_EMPTY_ROOM_NAME);
 	if (!check_room_valid(ft_trim_spaces(name)))
 		return (ERR_WRONG_ROOM_NAME);
-	if (find_room_by_name(&lem->rooms, name))
+	if (find_room_by_name(rooms, name))
 		return (ERR_ROOM_NAME_DUPL);
 	s1 = get_next_word(name + ft_strlen(name) + 1, &last);
 	if (!s1 || last)
@@ -102,7 +102,7 @@ t_result		add_lem_room(t_lemin *lem, char *str, int cmd)
 	if (ft_safe_atoi(ft_trim_spaces(s1), &xy[0]) != FT_ATOI_OK ||
 		ft_safe_atoi(ft_trim_spaces(s2), &xy[1]) != FT_ATOI_OK)
 		return (ERR_WRONG_ROOM_ARG);
-	if (check_room_xy_exist(&lem->rooms, xy[0], xy[1]))
+	if (check_room_xy_exist(rooms, xy[0], xy[1]))
 		return (ERR_ROOM_XY_DUPL);
-	return (add_roomdata(&lem->rooms, name, xy, cmd));
+	return (add_roomdata(rooms, name, xy, cmd));
 }
