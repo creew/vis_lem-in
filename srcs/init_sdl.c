@@ -12,18 +12,6 @@
 
 #include "vis_lemin.h"
 
-static int	create_surface(t_vis *vis)
-{
-	SDL_Surface		*screen_surface;
-	Uint32			color;
-
-	screen_surface = SDL_GetWindowSurface(vis->window);
-	color = SDL_MapRGB(screen_surface->format, 0, 255, 0);
-	SDL_FillRect(screen_surface, NULL, color);
-	SDL_UpdateWindowSurface(vis->window);
-	return (0);
-}
-
 static int	create_renderer(t_vis *vis)
 {
 	vis->ren = SDL_CreateRenderer(vis->window, -1,

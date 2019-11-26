@@ -27,7 +27,7 @@ void		text_out(t_vis *vis, SDL_Rect *to, char *txt, SDL_Color color)
 	SDL_Surface		*surface;
 	SDL_Texture		*msg;
 	SDL_Rect		rect;
-	float 			scale;
+	float			scale;
 
 	surface = TTF_RenderUTF8_Solid(vis->font, txt, color);
 	msg = SDL_CreateTextureFromSurface(vis->ren, surface);

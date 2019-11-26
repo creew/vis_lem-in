@@ -31,7 +31,7 @@ int			get_index_handle(int x, int y, t_vis *vis)
 	return (-1);
 }
 
-void		handle_mouse(SDL_Event *e, SDL_Window *window, t_vis *vis)
+void		handle_mouse(SDL_Event *e, t_vis *vis)
 {
 	int		index;
 
@@ -83,7 +83,7 @@ int			process_event(t_vis *vis)
 		else if (e.type == SDL_USEREVENT)
 			process_user_events(vis, &e);
 		else if (e.type == SDL_MOUSEBUTTONUP)
-			handle_mouse(&e, vis->window, vis);
+			handle_mouse(&e, vis);
 	}
 	return (run);
 }

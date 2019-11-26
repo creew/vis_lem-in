@@ -19,7 +19,7 @@ static void		draw_room_name(t_vis *vis, SDL_Rect *roomrect, t_roomdata *room)
 	rect.x = roomrect->x;
 	rect.y = roomrect->y;
 	rect.w = vis->roomsize;
-	rect.h = vis->roomsize / 5;
+	rect.h = vis->roomsize / 3;
 	if (room->cmd == LEM_CMD_START || room->cmd == LEM_CMD_END)
 		text_out(vis, &rect, room->cmd == LEM_CMD_START ?
 			"start" : "end", get_color(0, 0, 255, 255));
@@ -85,7 +85,7 @@ void			draw_ants(t_vis *vis)
 	if (vis->at_start)
 	{
 		tmp.angle = 90;
-		tmp.x = vis->lem.se.start->x * vis->roomsize;;
+		tmp.x = vis->lem.se.start->x * vis->roomsize;
 		tmp.y = vis->lem.se.start->y * vis->roomsize;
 		draw_ant(vis, &tmp);
 	}

@@ -14,7 +14,7 @@ NAME = vis_lemin
 
 CC = gcc
 
-CC_FLAGS = -Wall -Wextra -g3 -O3
+CC_FLAGS = -Wall -Wextra -Werror -g3
 
 ALL_C =	vis_lemin.c \
 		print_error.c \
@@ -84,14 +84,18 @@ lib:
 ft_printf:
 	$(COMP_PRINTF)
 
-$(NAME): $(OBJS) | lib ft_printf
+$(NAME): ./libft/libft.a ./ft_printf/libftprintf.a $(OBJS)
 	$(CC) $(CC_FLAGS) $^ $(LIB_DIR_FLAG) $(LIBS_FLAG) -o $@
 
 $(OBJDIR):
-	mkdir -p $(OBJDIR)
+	mkdir -p $@
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c $(HEADERS) ./libft/libft.a ./ft_printf/libftprintf.a | $(OBJDIR)
+$(OBJDIR)/%.o: $(SRCDIR)/%.c $(HEADERS) | $(OBJDIR)
 	$(CC) $(CC_FLAGS) $(INC_FLAG) -c $< -o $@
+
+./ft_printf/libftprintf.a: ft_printf
+
+./libft/libft.a: lib
 
 clean:
 	$(COMP_LIB) clean
