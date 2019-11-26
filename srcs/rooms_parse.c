@@ -17,14 +17,11 @@ t_roomdata		*find_room_by_name(t_roomarr *rooms, const char *name)
 	t_roomdata	*rdata;
 	size_t		count;
 
-	count = ft_array_size(rooms);
-	while (count--)
+	count = -1;
+	while (ft_array_get(rooms, ++count, (void **)&rdata) == 0)
 	{
-		if (ft_array_get(rooms, count, (void **)&rdata) == 0)
-		{
-			if (ft_strequ(name, rdata->name))
-				return (rdata);
-		}
+		if (ft_strequ(name, rdata->name))
+			return (rdata);
 	}
 	return (NULL);
 }
@@ -34,14 +31,11 @@ static int		check_room_xy_exist(t_roomarr *rooms, int x, int y)
 	t_roomdata	*rdata;
 	size_t		count;
 
-	count = ft_array_size(rooms);
-	while (count--)
+	count = -1;
+	while (ft_array_get(rooms, ++count, (void **)&rdata) == 0)
 	{
-		if (ft_array_get(rooms, count, (void **)&rdata) == 0)
-		{
-			if (rdata->x == x && rdata->y == y)
-				return (1);
-		}
+		if (rdata->x == x && rdata->y == y)
+			return (1);
 	}
 	return (0);
 }
@@ -72,8 +66,6 @@ static t_result	add_roomdata(t_roomarr *arr, const char *name,
 	rdata->x = xy[0];
 	rdata->y = xy[1];
 	rdata->cmd = cmd;
-	rdata->weigth = FT_INTMAX;
-	rdata->visited = 0;
 	ft_strlcpy(rdata->name, name, len + 1);
 	return (RET_OK);
 }

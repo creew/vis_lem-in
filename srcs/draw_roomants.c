@@ -14,15 +14,17 @@
 
 static void		draw_room_name(t_vis *vis, SDL_Rect *roomrect, t_roomdata *room)
 {
-	SDL_Point	point;
+	SDL_Rect	rect;
 
-	point.x = roomrect->x + 5;
-	point.y = roomrect->y + 5;
+	rect.x = roomrect->x;
+	rect.y = roomrect->y;
+	rect.w = vis->roomsize;
+	rect.h = vis->roomsize / 5;
 	if (room->cmd == LEM_CMD_START || room->cmd == LEM_CMD_END)
-		text_out(vis, &point, room->cmd == LEM_CMD_START ?
+		text_out(vis, &rect, room->cmd == LEM_CMD_START ?
 			"start" : "end", get_color(0, 0, 255, 255));
 	else
-		text_out(vis, &point, room->name, get_color(0, 0, 255, 255));
+		text_out(vis, &rect, room->name, get_color(0, 0, 255, 255));
 }
 
 void			draw_rooms(t_vis *vis)
@@ -74,8 +76,24 @@ void			draw_ants(t_vis *vis)
 {
 	size_t		index;
 	t_lemdata	*ldata;
+	t_lemdata	tmp;
 
 	index = -1;
 	while (ft_array_get(&vis->curlems, ++index, (void **)&ldata) == 0)
 		draw_ant(vis, ldata);
+	tmp.shift = 0;
+	if (vis->at_start)
+	{
+		tmp.angle = 90;
+		tmp.x = vis->lem.se.start->x * vis->roomsize;;
+		tmp.y = vis->lem.se.start->y * vis->roomsize;
+		draw_ant(vis, &tmp);
+	}
+	if (vis->finished)
+	{
+		tmp.angle = 90;
+		tmp.x = vis->lem.se.end->x * vis->roomsize;
+		tmp.y = vis->lem.se.end->y * vis->roomsize;
+		draw_ant(vis, &tmp);
+	}
 }

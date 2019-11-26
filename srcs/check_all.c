@@ -17,25 +17,22 @@ t_result	is_start_end_exists(t_roomarr *arr, t_borders *se)
 	int			start_count;
 	int			end_count;
 	t_roomdata	*rdata;
-	size_t		size;
+	size_t		index;
 
-	size = ft_array_size(arr);
+	index = -1;
 	start_count = 0;
 	end_count = 0;
-	while (size--)
+	while (ft_array_get(arr, ++index, (void **)&rdata) == 0)
 	{
-		if (ft_array_get(arr, size, (void **)&rdata) == 0)
+		if (rdata->cmd == LEM_CMD_START)
 		{
-			if (rdata->cmd == LEM_CMD_START)
-			{
-				se->start = rdata;
-				start_count++;
-			}
-			if (rdata->cmd == LEM_CMD_END)
-			{
-				se->end = rdata;
-				end_count++;
-			}
+			se->start = rdata;
+			start_count++;
+		}
+		if (rdata->cmd == LEM_CMD_END)
+		{
+			se->end = rdata;
+			end_count++;
 		}
 	}
 	return (start_count == 1 && end_count == 1 ? RET_OK : ERR_NO_START_OR_END);

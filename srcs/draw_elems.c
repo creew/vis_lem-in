@@ -28,8 +28,9 @@ void			draw_links(t_vis *vis)
 		start.y = link->left->y * vis->roomsize + vis->roomsize / 2 + main.y;
 		end.x = link->right->x * vis->roomsize + vis->roomsize / 2 + main.x;
 		end.y = link->right->y * vis->roomsize + vis->roomsize / 2 + main.y;
-		SDL_SetRenderDrawColor(vis->ren, 0xFF, 0xFF, 0x00, 0x00);
-		draw_line(vis->ren, &start, &end, 3);
+		SDL_SetRenderDrawColor(vis->ren, 0xFF, 0x00, 0x00, 0xFF);
+		SDL_RenderDrawLine(vis->ren, start.x, start.y, end.x, end.y);
+		//draw_line(vis->ren, &start, &end, 3);
 	}
 }
 

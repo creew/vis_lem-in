@@ -94,12 +94,7 @@ typedef struct	s_roomdata
 	size_t		index;
 	int			x;
 	int			y;
-	int			weigth;
 	char		cmd;
-	char		visited;
-	char		meh_visit;
-	int			ant_index;
-	int			ant_count;
 	char		name[1];
 }				t_roomdata;
 
@@ -169,7 +164,7 @@ int				sdl_init(t_vis *vis);
 int				load_image_ants(t_vis *vis);
 int				load_image_buttons(t_vis *vis);
 TTF_Font		*load_font(int pt_size);
-void			text_out(t_vis *vis, SDL_Point *point, char *txt,
+void			text_out(t_vis *vis, SDL_Rect *rect, char *txt,
 					SDL_Color color);
 void			info_text_out(t_vis *vis, SDL_Point *point, char *txt,
 					SDL_Color color);
