@@ -33,7 +33,9 @@ ALL_C =	vis_lemin.c \
 		destroy.c \
 		draw_all.c \
 		get_dims.c \
-		draw_arc.c
+		draw_arc.c \
+		moves.c \
+		draw_roomants.c
 
 SRCDIR = ./srcs
 OBJDIR = ./objs

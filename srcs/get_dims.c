@@ -54,5 +54,5 @@ void	get_info_rect(SDL_Rect *rect, int ww, int wh)
 	rect->x = handles.x + handles.w;
 	rect->y = 0;
 	rect->w = ww - rect->x;
-	rect->h = 20;
+	rect->h = 25;
 }

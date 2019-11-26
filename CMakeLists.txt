@@ -32,22 +32,30 @@ add_executable(
         srcs/draw_all.c
         srcs/get_dims.c
         srcs/draw_arc.c
-        )
+        srcs/moves.c srcs/draw_roomants.c)
 
 
 
 find_library(SDL2s SDL2 ./lib)
 find_library(SDL2i SDL2_image ./lib)
 find_library(SDL2t SDL2_ttf ./lib)
-find_library(FT ft ./libft)
-target_link_libraries(vis_lem_in PUBLIC ${SDL2s} ${SDL2i} ${SDL2t} ${FT})
+target_link_libraries(vis_lem_in PUBLIC ${SDL2s} ${SDL2i} ${SDL2t} ${FT} ${FTPR} )
 
-add_dependencies(vis_lem_in libft_target)
+add_dependencies(vis_lem_in libftprintf_target libft_target)
+
+find_library(FTPR ftprintf ./ft_printf)
+find_library(FT ft ./libft)
 
 add_custom_target(
         libft_target
         COMMAND make
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/libft
+)
+
+add_custom_target(
+        libftprintf_target
+        COMMAND make
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/ft_printf
 )
 
 

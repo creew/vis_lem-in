@@ -115,7 +115,8 @@ void		draw_line(SDL_Renderer *ren, SDL_Point *start,
 
 	len = (int)sqrtf((end->x - start->x) * (end->x - start->x) +
 					 (end->y - start->y) * (end->y - start->y));
-	text = SDL_CreateTexture(ren,SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, len, th);
+	text = SDL_CreateTexture(ren,SDL_PIXELFORMAT_RGBA8888,
+		SDL_TEXTUREACCESS_STREAMING, len, th);
 	SDL_QueryTexture(text, &format, NULL, &w, &h);
 	if (SDL_LockTexture(text, NULL, (void**)&pixels, &pitch))
 		print_sdl_error(SDL_GetError());
@@ -126,7 +127,7 @@ void		draw_line(SDL_Renderer *ren, SDL_Point *start,
 	{
 		tw = len;
 		while (tw--)
-			pixels[thi * (pitch / sizeof(unsigned int)) + tw] = color ;
+			pixels[thi * (pitch / sizeof(unsigned int)) + tw] = color;
 	}
 	SDL_FreeFormat(pixelFormat);
 	SDL_UnlockTexture(text);
@@ -141,6 +142,6 @@ void		draw_line(SDL_Renderer *ren, SDL_Point *start,
 	out.h = th;
 	center.x = in.x;
 	center.y = in.h / 2;
-	SDL_RenderCopyEx(ren, text, &in, &out, angle, &center , SDL_FLIP_NONE);
+	SDL_RenderCopyEx(ren, text, &in, &out, angle, &center, SDL_FLIP_NONE);
 	SDL_DestroyTexture(text);
 }

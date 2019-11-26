@@ -15,13 +15,14 @@
 TTF_Font	*load_font(int pt_size)
 {
 	TTF_Font	*font;
+
 	font = TTF_OpenFont(NES_FONT, pt_size);
 	if (font == NULL)
 		print_sdl_error(TTF_GetError());
 	return (font);
 }
 
-void	text_out(t_vis *vis, SDL_Point *point, char *txt, SDL_Color color)
+void		text_out(t_vis *vis, SDL_Point *point, char *txt, SDL_Color color)
 {
 	SDL_Surface		*surface;
 	SDL_Texture		*msg;
@@ -38,7 +39,8 @@ void	text_out(t_vis *vis, SDL_Point *point, char *txt, SDL_Color color)
 	SDL_DestroyTexture(msg);
 }
 
-void	info_text_out(t_vis *vis, SDL_Point *point, char *txt, SDL_Color color)
+void		info_text_out(t_vis *vis, SDL_Point *point, char *txt,
+	SDL_Color color)
 {
 	SDL_Surface		*surface;
 	SDL_Texture		*msg;

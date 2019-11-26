@@ -193,4 +193,9 @@ void		draw_arc(SDL_Renderer * ren, SDL_Point c, int q, int r);
 void		draw_round_rect(SDL_Renderer *ren, SDL_Rect *rect, int r);
 void		draw_line(SDL_Renderer *ren, SDL_Point *start, SDL_Point *end, int th);
 void		draw_filled_round_rect(SDL_Renderer *ren, SDL_Rect *rect, int r);
+
+t_result	init_move(t_vis *vis);
+t_result	finish_move(t_vis *vis);
+t_result	do_move(t_vis *vis, size_t count);
+SDL_Color	get_color(int r, int g, int b, int a);
 #endif
